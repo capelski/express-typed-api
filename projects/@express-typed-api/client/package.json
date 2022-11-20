@@ -1,0 +1,17 @@
+{
+  "author": "Carles Capellas <capellas.carles@gmail.com>",
+  "dependencies": {
+    "@express-typed-api/common": "file:projects/@express-typed-api/common"
+  },
+  "license": "ISC",
+  "main": "distribution/index.js",
+  "name": "@express-typed-api/client",
+  "scripts": {
+    "build": "npm run clean && tsc -p ./tsconfig.client.json",
+    "clean": "rm -rf distribution",
+    "clean:modules": "rm -rf node_modules",
+    "dev": "nodemon source/index.ts"
+  },
+  "types": "distribution/index.d.ts",
+  "version": "1.0.0"
+}

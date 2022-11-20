@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@express-typed-api/common": ["./projects/@express-typed-api/common/source"]
+    }
+  },
+  "extends": "./tsconfig.base.json"
+}

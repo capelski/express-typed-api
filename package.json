@@ -1,0 +1,37 @@
+{
+  "author": "Carles Capellas <capellas.carles@gmail.com>",
+  "dependencies": {
+    "@types/express": "^4.17.14"
+  },
+  "devDependencies": {
+    "concurrently": "^7.5.0",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
+  },
+  "license": "ISC",
+  "name": "express-typed-api",
+  "scripts": {
+    "build": "npm run build -w @express-typed-api/common && npm run build -w @express-typed-api/client && npm run build -w @express-typed-api/server",
+    "build:client": "npm run build -w @express-typed-api/client",
+    "build:common": "npm run build -w @express-typed-api/common",
+    "build:server": "npm run build -w @express-typed-api/server",
+    "clean": "npm run clean -ws",
+    "clean:client": "npm run clean -w @express-typed-api/client",
+    "clean:common": "npm run clean -w @express-typed-api/common",
+    "clean:modules": "npm run clean:modules -ws -if-present && rm -rf node_modules",
+    "clean:server": "npm run clean -w @express-typed-api/server",
+    "dev": "concurrently --kill-others \"npm run dev:client\" \"npm run dev:common\" \"npm run dev:server\"",
+    "dev:client": "npm run dev -w @express-typed-api/client",
+    "dev:common": "npm run dev -w @express-typed-api/common",
+    "dev:server": "npm run dev -w @express-typed-api/server",
+    "format:check": "prettier --list-different './projects/@express-typed-api/{client,common,server}/**/*.{js,ts,tsx}' './**/*.json'",
+    "format:fix": "prettier --write './projects/@express-typed-api/{client,common,server}/**/*.{js,ts,tsx}' './**/*.json'"
+  },
+  "version": "1.0.0",
+  "workspaces": [
+    "./projects/@express-typed-api/*"
+  ]
+}
