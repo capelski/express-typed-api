@@ -3,6 +3,7 @@
   "dependencies": {
     "@express-typed-api/common": "file:projects/@express-typed-api/common"
   },
+  "description": "Client side library to infer the return type of fetch requests based on the corresponding Express Api's types declaration",
   "license": "ISC",
   "main": "distribution/index.js",
   "name": "@express-typed-api/client",
