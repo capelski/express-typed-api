@@ -12,7 +12,10 @@ const jsonEndpoint = <T>(
 ): express.RequestHandler[] => {
   const handler: express.RequestHandler = (req, res, next) => {
     const { payload, status } = endpointHandler(req, res, next);
-    res.status(status).json(payload);
+    if (status) {
+      res.status(status);
+    }
+    res.json(payload);
   };
   return middleware ? middleware(handler) : [handler];
 };

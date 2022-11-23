@@ -28,7 +28,7 @@ export enum EndpointMethod {
 
 export type EndpointResponse<T> = {
   payload: T;
-  status: number;
+  status?: number;
 };
 
 export type JsonEndpoint<T> = {
