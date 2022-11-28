@@ -8,6 +8,11 @@ export type ApiEndpoints = {
   };
 };
 
+export type ComposedEndpointHandler<T> = {
+  handler: EndpointHandler<T>;
+  middleware: AdditionalMiddleware;
+};
+
 export type Dictionary<TValue, TKey extends string | symbol | number = string> = {
   [K in TKey]: TValue;
 };
@@ -31,7 +36,4 @@ export type EndpointResponse<T> = {
   status?: number;
 };
 
-export type JsonEndpoint<T> = {
-  handler: EndpointHandler<T>;
-  middleware?: AdditionalMiddleware;
-};
+export type JsonEndpoint<T> = EndpointHandler<T> | ComposedEndpointHandler<T>;

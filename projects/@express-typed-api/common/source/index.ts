@@ -1,6 +1,7 @@
 export type {
   AdditionalMiddleware,
   ApiEndpoints,
+  ComposedEndpointHandler,
   Dictionary,
   EndpointHandler,
   EndpointMethod,

@@ -1,23 +1,19 @@
-import {
-  AdditionalMiddleware,
-  ApiEndpoints,
-  EndpointHandler,
-  EndpointMethod,
-} from '@express-typed-api/common';
+import { ApiEndpoints, EndpointMethod, JsonEndpoint } from '@express-typed-api/common';
 import express from 'express';
 
-const jsonEndpoint = <T>(
-  endpointHandler: EndpointHandler<T>,
-  middleware?: AdditionalMiddleware
-): express.RequestHandler[] => {
-  const handler: express.RequestHandler = (req, res, next) => {
-    const { payload, status } = endpointHandler(req, res, next);
+const jsonEndpoint = <T>(endpoint: JsonEndpoint<T>): express.RequestHandler[] => {
+  const { handler, middleware } =
+    'handler' in endpoint ? endpoint : { handler: endpoint, middleware: undefined };
+
+  const adapter: express.RequestHandler = (req, res, next) => {
+    const { payload, status } = handler(req, res, next);
     if (status) {
       res.status(status);
     }
     res.json(payload);
   };
-  return middleware ? middleware(handler) : [handler];
+
+  return middleware ? middleware(adapter) : [adapter];
 };
 
 export const publishApi = <T extends ApiEndpoints>(
@@ -30,7 +26,7 @@ export const publishApi = <T extends ApiEndpoints>(
       .map((method) => method as EndpointMethod)
       .forEach((method) => {
         const endpoint = availableMethods[method]!;
-        const handlers = jsonEndpoint(endpoint.handler, endpoint.middleware);
+        const handlers = jsonEndpoint(endpoint);
         (<express.Express>app)[method](path, ...handlers);
       });
   });

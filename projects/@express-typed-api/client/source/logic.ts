@@ -1,4 +1,9 @@
-import { ApiEndpoints, Dictionary, JsonEndpoint } from '@express-typed-api/common';
+import {
+  ApiEndpoints,
+  ComposedEndpointHandler,
+  Dictionary,
+  EndpointHandler,
+} from '@express-typed-api/common';
 import { TypedRequestInit, TypedResponse } from './types';
 
 export const getTypedFetch = <T extends ApiEndpoints>(_fetch: Window['fetch']) => {
@@ -13,8 +18,10 @@ export const getTypedFetch = <T extends ApiEndpoints>(_fetch: Window['fetch']) =
 
     return _fetch(url, init) as Promise<
       TypedResponse<
-        T[TPath][TMethod] extends JsonEndpoint<any>
-          ? ReturnType<T[TPath][TMethod]['handler']>['payload']
+        T[TPath][TMethod] extends EndpointHandler<infer U>
+          ? U
+          : T[TPath][TMethod] extends ComposedEndpointHandler<infer U>
+          ? U
           : unknown
       >
     >;
