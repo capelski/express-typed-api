@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+
+  <body>
+    <div>
+      <div>
+        <p>
+          <span>City: </span>
+          <input id="city-name" type="text" />
+        </p>
+        <button id="get-weather" type="button">Get weather</button>
+
+        <p id="error-message" style="color: red"></p>
+
+        <div>
+          <h2 id="city-header">-</h2>
+          <h3 style="display: flex; align-items: center">
+            <img id="icon" style="height: 100px; margin-right: 16px; width: 100px" />
+            <span id="temperature">-</span> ºC
+          </h3>
+          <p>Min temperature: <span id="min-temperature">-</span> ºC</p>
+          <p>Max temperature: <span id="max-temperature">-</span> ºC</p>
+          <p>Wind speed: <span id="wind-speed">-</span> km/h</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

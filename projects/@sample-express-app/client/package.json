@@ -1,0 +1,27 @@
+{
+  "author": "Carles Capellas <capellas.carles@gmail.com>",
+  "dependencies": {
+    "@express-typed-api/client": "file:projects/@express-typed-api/client",
+    "@express-typed-api/common": "file:projects/@express-typed-api/common",
+    "@sample-express-app/common": "file:projects/@sample-express-app/common"
+  },
+  "devDependencies": {
+    "html-loader": "^3.1.0",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.2.6",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.3",
+    "webpack-merge": "^5.8.0"
+  },
+  "license": "ISC",
+  "name": "@sample-express-app/client",
+  "scripts": {
+    "build": "npm run clean && webpack --config webpack/production.config.js",
+    "build:check": "tsc -p ./tsconfig.client.json --noEmit",
+    "clean": "rm -rf distribution",
+    "clean:modules": "rm -rf node_modules",
+    "dev": "webpack serve --config webpack/development.config.js"
+  },
+  "version": "1.0.0"
+}

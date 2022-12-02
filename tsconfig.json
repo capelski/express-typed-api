@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "paths": {
-      "@express-typed-api/common": ["./projects/@express-typed-api/common/source"]
+      "@express-typed-api/client": ["./projects/@express-typed-api/client/source"],
+      "@express-typed-api/common": ["./projects/@express-typed-api/common/source"],
+      "@express-typed-api/server": ["./projects/@express-typed-api/server/source"],
+      "@sample-express-app/common": ["./projects/@sample-express-app/common/source"]
     }
   },
   "extends": "./tsconfig.base.json"

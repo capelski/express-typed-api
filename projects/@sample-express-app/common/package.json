@@ -1,17 +1,14 @@
 {
   "author": "Carles Capellas <capellas.carles@gmail.com>",
   "dependencies": {
-    "@types/express": "^4.17.14"
-  },
-  "description": "Common code for both @express-typed-api client/server libraries",
-  "devDependencies": {
-    "express": "^4.18.2"
+    "@express-typed-api/common": "file:projects/@express-typed-api/common"
   },
   "license": "ISC",
   "main": "distribution/index.js",
-  "name": "@express-typed-api/common",
+  "name": "@sample-express-app/common",
   "scripts": {
     "build": "npm run clean && tsc -p ./tsconfig.common.json",
+    "build:check": "tsc -p ./tsconfig.common.json --noEmit",
     "clean": "rm -rf distribution",
     "clean:modules": "rm -rf node_modules",
     "dev": "tsc -p ./tsconfig.common.json --watch"

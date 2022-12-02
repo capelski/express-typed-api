@@ -13,26 +13,28 @@
     "typescript": "^4.9.3"
   },
   "license": "ISC",
-  "name": "express-typed-api",
+  "name": "express-typed-api-monorepo",
   "scripts": {
-    "build": "npm run build -w @express-typed-api/common && npm run build -w @express-typed-api/client && npm run build -w @express-typed-api/server",
-    "build:client": "npm run build -w @express-typed-api/client",
-    "build:common": "npm run build -w @express-typed-api/common",
-    "build:server": "npm run build -w @express-typed-api/server",
+    "build": "npm run build:lib && npm run build:sample",
+    "build:lib": "cd projects/@express-typed-api && npm run build",
+    "build:sample": "cd projects/@sample-express-app && npm run build",
     "clean": "npm run clean -ws",
-    "clean:client": "npm run clean -w @express-typed-api/client",
-    "clean:common": "npm run clean -w @express-typed-api/common",
-    "clean:modules": "npm run clean:modules -ws -if-present && rm -rf node_modules",
-    "clean:server": "npm run clean -w @express-typed-api/server",
-    "dev": "npm run build:common && concurrently --kill-others \"npm run dev:client\" \"npm run dev:common\" \"npm run dev:server\"",
-    "dev:client": "npm run dev -w @express-typed-api/client",
-    "dev:common": "npm run dev -w @express-typed-api/common",
-    "dev:server": "npm run dev -w @express-typed-api/server",
-    "format:check": "prettier --list-different './projects/@express-typed-api/{client,common,server}/**/*.{js,ts,tsx}' './**/*.json'",
-    "format:fix": "prettier --write './projects/@express-typed-api/{client,common,server}/**/*.{js,ts,tsx}' './**/*.json'"
+    "clean:lib": "cd projects/@express-typed-api && npm run clean",
+    "clean:sample": "cd projects/@sample-express-app && npm run clean",
+    "clean:modules": "npm run clean:modules:lib && npm run clean:modules:sample && rm -rf node_modules",
+    "clean:modules:lib": "cd projects/@express-typed-api && npm run clean:modules",
+    "clean:modules:sample": "cd projects/@sample-express-app && npm run clean:modules",
+    "dev:lib": "cd projects/@express-typed-api && npm run dev",
+    "dev:sample": "cd projects/@sample-express-app && npm run dev",
+    "format:check": "prettier --list-different './projects/**/*.{js,ts,tsx}' './**/*.json'",
+    "format:fix": "prettier --write './projects/**/*.{js,ts,tsx}' './**/*.json'",
+    "install:lib": "cd projects/@express-typed-api && npm install",
+    "install:sample": "cd projects/@sample-express-app && npm install",
+    "postinstall": "npm run install:lib && npm run install:sample"
   },
   "version": "1.0.0",
   "workspaces": [
-    "./projects/@express-typed-api/*"
+    "./projects/@express-typed-api/*",
+    "./projects/@sample-express-app/*"
   ]
 }
