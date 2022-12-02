@@ -1,7 +1,14 @@
-import { ApiEndpoints, EndpointMethod, JsonEndpoint } from '@express-typed-api/common';
+import {
+  ApiEndpoints,
+  ComposedEndpointHandler,
+  EndpointHandler,
+  EndpointMethod,
+} from '@express-typed-api/common';
 import express from 'express';
 
-const jsonEndpoint = <T>(endpoint: JsonEndpoint<T>): express.RequestHandler[] => {
+const jsonEndpoint = <T>(
+  endpoint: EndpointHandler<T> | ComposedEndpointHandler<T>
+): express.RequestHandler[] => {
   const { handler, middleware } =
     'handler' in endpoint ? endpoint : { handler: endpoint, middleware: undefined };
 

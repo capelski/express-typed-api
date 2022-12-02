@@ -4,7 +4,7 @@ export type AdditionalMiddleware = (handler: express.RequestHandler) => express.
 
 export type ApiEndpoints = {
   [path: string]: {
-    [method in EndpointMethod]?: JsonEndpoint<any>;
+    [method in EndpointMethod]?: EndpointHandler<any> | ComposedEndpointHandler<any>;
   };
 };
 
@@ -35,5 +35,3 @@ export type EndpointResponse<T> = {
   payload: T;
   status?: number;
 };
-
-export type JsonEndpoint<T> = EndpointHandler<T> | ComposedEndpointHandler<T>;

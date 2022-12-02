@@ -6,5 +6,4 @@ export type {
   EndpointHandler,
   EndpointMethod,
   EndpointResponse,
-  JsonEndpoint,
 } from './types';
