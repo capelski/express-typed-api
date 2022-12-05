@@ -15,7 +15,7 @@
     "build": "npm run clean && tsc -p ./tsconfig.server.json",
     "clean": "rm -rf distribution",
     "clean:modules": "rm -rf node_modules",
-    "dev": "nodemon source/index.ts"
+    "dev": "tsc -p ./tsconfig.server.json --watch"
   },
   "types": "distribution/index.d.ts",
   "version": "1.0.0"
