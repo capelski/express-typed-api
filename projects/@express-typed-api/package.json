@@ -12,7 +12,7 @@
     "clean:common": "npm run clean -w @express-typed-api/common",
     "clean:modules": "npm run clean:modules -ws -if-present && rm -rf node_modules",
     "clean:server": "npm run clean -w @express-typed-api/server",
-    "dev": "npm run build:common && concurrently --kill-others \"npm run dev:client\" \"npm run dev:common\" \"npm run dev:server\"",
+    "dev": "npm run build:common && concurrently --kill-others 'npm run dev:client' 'npm run dev:common' 'npm run dev:server'",
     "dev:client": "npm run dev -w @express-typed-api/client",
     "dev:common": "npm run dev -w @express-typed-api/common",
     "dev:server": "npm run dev -w @express-typed-api/server",

@@ -22,6 +22,7 @@
     "clean:modules": "npm run clean:modules:lib && npm run clean:modules:sample && rm -rf node_modules",
     "clean:modules:lib": "cd projects/@express-typed-api && npm run clean:modules",
     "clean:modules:sample": "cd projects/@sample-express-app && npm run clean:modules",
+    "dev": "npm run build:lib && concurrently --kill-others 'sleep 15 && npm run dev:lib' 'npm run dev:sample'",
     "dev:lib": "cd projects/@express-typed-api && npm run dev",
     "dev:sample": "cd projects/@sample-express-app && npm run dev",
     "format:check": "prettier --list-different './projects/**/*.{js,ts,tsx}' './**/*.json'",
