@@ -17,13 +17,20 @@ export const getTypedFetch = <T extends ApiEndpoints>(_fetch: Window['fetch']) =
   return function typedFetch<TPath extends keyof T, TMethod extends keyof T[TPath]>(
     path: TPath,
     init: TypedRequestInit<TMethod>,
-    queryString?: Dictionary<string>
+    options: { queryString?: Dictionary<string>; urlParams?: Dictionary<string> } = {}
   ) {
-    const url = queryString
-      ? <string>path + '?' + new URLSearchParams(queryString).toString()
+    const queryUrl = options.queryString
+      ? <string>path + '?' + new URLSearchParams(options.queryString).toString()
       : <string>path;
 
-    return _fetch(url, init) as Promise<
+    const paramUrl = options.urlParams
+      ? Object.keys(options.urlParams).reduce((reduced, paramName) => {
+          const paramValue = options.urlParams![paramName];
+          return reduced.replace(`:${paramName}`, paramValue);
+        }, queryUrl)
+      : queryUrl;
+
+    return _fetch(paramUrl, init) as Promise<
       TypedResponse<
         T[TPath][TMethod] extends EndpointHandler<infer U>
           ? U

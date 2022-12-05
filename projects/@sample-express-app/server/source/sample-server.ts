@@ -27,8 +27,7 @@ const getRandomWeather = (): Weather => ({
   windSpeed: randomFloat(0, 10),
 });
 
-const weatherEndpoint: EndpointHandler<GetWeatherEndpoint> = (req) => {
-  const cityName = <string | undefined>req.query.cityName;
+const weatherLogic = (cityName: string | undefined) => {
   const cityNameValidation = validateCityName(cityName);
 
   if (!cityNameValidation.valid) {
@@ -37,9 +36,21 @@ const weatherEndpoint: EndpointHandler<GetWeatherEndpoint> = (req) => {
   return { payload: getRandomWeather(), status: 200 };
 };
 
+const weatherByQueryString: EndpointHandler<GetWeatherEndpoint> = (req) => {
+  const cityName = <string | undefined>req.query.cityName;
+  return weatherLogic(cityName);
+};
+
+const weatherByUrlParam: EndpointHandler<GetWeatherEndpoint> = (req) => {
+  return weatherLogic(req.params.cityName);
+};
+
 const weatherApi: WeatherApiEndpoints = {
   '/api/weather': {
-    get: weatherEndpoint,
+    get: weatherByQueryString,
+  },
+  '/api/weather/:cityName': {
+    get: weatherByUrlParam,
   },
 };
 

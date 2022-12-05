@@ -39,6 +39,9 @@ export type WeatherApiEndpoints = {
   '/api/weather': {
     get: EndpointHandler<GetWeatherEndpoint>;
   };
+  '/api/weather/:cityName': {
+    get: EndpointHandler<GetWeatherEndpoint>;
+  };
 };
 
 const minimumCharacters = 3;
