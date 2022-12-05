@@ -1,2 +1,2 @@
 export * from '@express-typed-api/common';
-export { publishApi } from './logic';
+export { publishApi } from './server';

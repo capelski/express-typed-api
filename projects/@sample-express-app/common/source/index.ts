@@ -1,3 +1,2 @@
-export * from './logic';
-export { WeatherIcons } from './types';
-export type { GetWeatherEndpoint, Validation, Weather, WeatherApiEndpoints } from './types';
+export { validateCityName, WeatherIcons } from './sample-common';
+export type { GetWeatherEndpoint, Validation, Weather, WeatherApiEndpoints } from './sample-common';

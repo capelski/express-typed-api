@@ -17,7 +17,7 @@
     "build:check": "tsc -p ./tsconfig.server.json --noEmit",
     "clean": "rm -rf distribution",
     "clean:modules": "rm -rf node_modules",
-    "dev": "nodemon source/index.ts"
+    "dev": "nodemon source/sample-server.ts"
   },
   "version": "1.0.0"
 }

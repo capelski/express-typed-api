@@ -6,4 +6,4 @@ export type {
   EndpointHandler,
   EndpointMethod,
   EndpointResponse,
-} from './types';
+} from './common';

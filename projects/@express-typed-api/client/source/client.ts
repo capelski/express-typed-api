@@ -4,7 +4,14 @@ import {
   Dictionary,
   EndpointHandler,
 } from '@express-typed-api/common';
-import { TypedRequestInit, TypedResponse } from './types';
+
+export type TypedResponse<T> = Omit<Response, 'json'> & {
+  json: () => Promise<T>;
+};
+
+export type TypedRequestInit<T> = RequestInit & {
+  method: T;
+};
 
 export const getTypedFetch = <T extends ApiEndpoints>(_fetch: Window['fetch']) => {
   return function typedFetch<TPath extends keyof T, TMethod extends keyof T[TPath]>(
