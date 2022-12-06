@@ -5,7 +5,7 @@ import {
   WeatherApiEndpoints,
 } from '@sample-express-app/common';
 
-const typedFetch = getTypedFetch<WeatherApiEndpoints>(fetch);
+const typedFetch = getTypedFetch<WeatherApiEndpoints>();
 
 const cityNameInput = <HTMLInputElement>document.getElementById('city-name')!;
 const getWeatherByQSButton = document.getElementById('get-weather-by-query-string')!;

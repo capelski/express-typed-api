@@ -13,7 +13,11 @@ export type TypedRequestInit<T> = RequestInit & {
   method: T;
 };
 
-export const getTypedFetch = <T extends ApiEndpoints>(_fetch: Window['fetch']) => {
+export const getTypedFetch = <T extends ApiEndpoints>() => {
+  if (typeof fetch === 'undefined') {
+    throw new Error('fetch is not available in this context. Are you running it on a browser?');
+  }
+
   return function typedFetch<TPath extends keyof T, TMethod extends keyof T[TPath]>(
     path: TPath,
     init: TypedRequestInit<TMethod>,
@@ -30,7 +34,7 @@ export const getTypedFetch = <T extends ApiEndpoints>(_fetch: Window['fetch']) =
         }, queryUrl)
       : queryUrl;
 
-    return _fetch(paramUrl, init) as Promise<
+    return fetch(paramUrl, init) as Promise<
       TypedResponse<
         T[TPath][TMethod] extends EndpointHandler<infer U>
           ? U
