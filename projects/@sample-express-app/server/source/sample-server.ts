@@ -33,7 +33,7 @@ const weatherLogic = (cityName: string | undefined) => {
   if (!cityNameValidation.valid) {
     return { payload: { errorMessage: cityNameValidation.message }, status: 400 };
   }
-  return { payload: getRandomWeather(), status: 200 };
+  return { payload: getRandomWeather() };
 };
 
 const weatherByQueryString: EndpointHandler<GetWeatherEndpoint> = (req) => {
