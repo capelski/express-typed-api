@@ -4,6 +4,7 @@
     "@express-typed-api/client": "file:projects/@express-typed-api/client",
     "@sample-express-app/common": "file:projects/@sample-express-app/common"
   },
+  "description": "@express-typed-api/client usage samples",
   "devDependencies": {
     "html-loader": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",
@@ -15,6 +16,7 @@
   },
   "license": "ISC",
   "name": "@sample-express-app/client",
+  "private": true,
   "scripts": {
     "build": "npm run clean && webpack --config webpack/production.config.js",
     "build:check": "tsc -p ./tsconfig.client.json --noEmit",

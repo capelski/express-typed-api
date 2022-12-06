@@ -5,12 +5,14 @@
     "@sample-express-app/common": "file:projects/@sample-express-app/common",
     "express": "^4.18.2"
   },
+  "description": "@express-typed-api/server usage samples",
   "devDependencies": {
     "nodemon": "^2.0.20",
     "ts-node": "^10.4.0"
   },
   "license": "ISC",
   "name": "@sample-express-app/server",
+  "private": true,
   "scripts": {
     "build": "tsc -p ./tsconfig.server.json",
     "build:check": "tsc -p ./tsconfig.server.json --noEmit",

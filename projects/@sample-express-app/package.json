@@ -1,7 +1,9 @@
 {
   "author": "Carles Capellas <capellas.carles@gmail.com>",
+  "description": "@express-typed-api usage sample packages",
   "license": "ISC",
   "name": "sample-express-app",
+  "private": true,
   "scripts": {
     "build": "npm run build -w @sample-express-app/common && npm run build -w @sample-express-app/client && npm run build -w @sample-express-app/server",
     "build:client": "npm run build -w @sample-express-app/client",

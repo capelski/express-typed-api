@@ -3,9 +3,11 @@
   "dependencies": {
     "@express-typed-api/common": "file:projects/@express-typed-api/common"
   },
+  "description": "Common code for @express-typed-api client/server usage samples",
   "license": "ISC",
   "main": "distribution/index.js",
   "name": "@sample-express-app/common",
+  "private": true,
   "scripts": {
     "build": "npm run clean && tsc -p ./tsconfig.common.json",
     "build:check": "tsc -p ./tsconfig.common.json --noEmit",

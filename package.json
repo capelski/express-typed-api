@@ -12,6 +12,7 @@
   },
   "license": "ISC",
   "name": "express-typed-api-monorepo",
+  "private": true,
   "scripts": {
     "build": "npm run build:lib && npm run build:sample",
     "build:lib": "cd projects/@express-typed-api && npm run build",
