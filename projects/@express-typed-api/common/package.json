@@ -7,11 +7,16 @@
   "license": "ISC",
   "main": "distribution/index.js",
   "name": "@express-typed-api/common",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "npm run clean && tsc -p ./tsconfig.common.json",
     "clean": "rm -rf distribution",
     "clean:modules": "rm -rf node_modules",
-    "dev": "tsc -p ./tsconfig.common.json --watch"
+    "dev": "tsc -p ./tsconfig.common.json --watch",
+    "prepublish": "npm run build"
   },
   "types": "distribution/index.d.ts",
   "version": "1.0.0"

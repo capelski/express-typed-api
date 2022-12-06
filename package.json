@@ -30,7 +30,8 @@
     "format:fix": "prettier --write './projects/**/*.{js,ts,tsx}' './**/*.json'",
     "install:lib": "cd projects/@express-typed-api && npm install",
     "install:sample": "cd projects/@sample-express-app && npm install",
-    "postinstall": "npm run install:lib && npm run install:sample"
+    "postinstall": "npm run install:lib && npm run install:sample",
+    "publish:lib": "npm publish -w @express-typed-api/client -w @express-typed-api/common -w @express-typed-api/server"
   },
   "version": "1.0.0",
   "workspaces": [

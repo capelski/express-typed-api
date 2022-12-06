@@ -1,0 +1,5 @@
+!distribution/
+node_modules/
+source/
+tsconfig.*
+*.tgz

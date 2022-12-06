@@ -1,6 +1,6 @@
 # Express typed api
 
-Simple client/server side libraries to assist with creating a type declaration for an [express](https://expressjs.com/) API and using that type to automatically infer the return type of client `fetch` requests.
+Simple client/server libraries to assist with creating a type declaration for an [express](https://expressjs.com/) API and using that type to automatically infer the return type of client `fetch` requests.
 
 ## Usage
 
