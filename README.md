@@ -4,13 +4,9 @@ Simple client/server libraries to assist with creating a type declaration for an
 
 ## Usage
 
-### 1. Server
+### 1. API's type declaration
 
-```bash
-npm install --save @express-typed-api/server
-```
-
-Having installed the server library on your express server, you need to declare a type for your API and replace imperative `app.<http_method>` calls with the `publishApi` method. Given the following sample express app:
+You will need to declare a type for your API in a folder/project accessible to both client and server sides. Here is what the type declaration would look like for the following sample express app:
 
 ```typescript
 import express from 'express';
@@ -39,7 +35,9 @@ app.listen(port, () => {
 });
 ```
 
-This is what the API's type declaration would look like:
+```bash
+npm install --save @express-typed-api/common
+```
 
 ```typescript
 /* readme-shared.ts */
@@ -61,9 +59,13 @@ export type WeatherApiEndpoints = {
 };
 ```
 
-_Note that the type declaration must be imported from both client and server side._
+### 2. Server side
 
-And this is how to replace the `app.<http_method>` calls with the `publishApi` method:
+Having installed the server library on your express server, you will need to replace imperative `app.<http_method>` calls with the `publishApi` method. This is how to use `publishApi` for the previous sample express app:
+
+```bash
+npm install --save @express-typed-api/server
+```
 
 ```typescript
 import { EndpointHandler, publishApi } from '@express-typed-api/server';
@@ -102,13 +104,13 @@ app.listen(port, () => {
 });
 ```
 
-### 2. Client
+### 3. Client
 
 ```bash
 npm install --save @express-typed-api/client
 ```
 
-Having installed the client library on your UI web app, you need to import the API's type declaration, pass it as type parameter to the `getTypedFetch` method and use the returned function to replace all the `fetch` calls. Given the following sample `fetch` request:
+Having installed the client library on your UI web app, you will need to import the API's type declaration, pass it as type parameter to the `getTypedFetch` method and use the returned function to replace all the `fetch` calls. Given the following sample `fetch` request:
 
 ```typescript
 export const fetchWeather = async (cityName: string) => {
