@@ -1,7 +1,7 @@
 {
   "author": "Carles Capellas <capellas.carles@gmail.com>",
   "dependencies": {
-    "@express-typed-api/common": "file:projects/@express-typed-api/common",
+    "@express-typed-api/common": "^1.0.1",
     "@types/express": "^4.17.14"
   },
   "description": "Server side library to expose an Express Api's endpoints generating a types declaration for the Api",
@@ -17,8 +17,9 @@
     "clean": "rm -rf distribution",
     "clean:modules": "rm -rf node_modules",
     "dev": "tsc -p ./tsconfig.server.json --watch",
-    "prepublish": "npm run build"
+    "prepack": "npm run build && cp ../../../README.md README.md",
+    "postpack": "rm README.md"
   },
   "types": "distribution/index.d.ts",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
