@@ -6,20 +6,39 @@ import {
 } from '@express-typed-api/common';
 import express from 'express';
 
+export type PublishedEndpoint = {
+  method: EndpointMethod;
+  handlers: express.RequestHandler[];
+  path: string;
+};
+
+const allMethods: string[] = Object.values(EndpointMethod);
+
 export const publishApi = <T extends ApiEndpoints>(
   app: express.Express | express.Router,
   apiEndpoints: T
-) => {
-  Object.keys(apiEndpoints).forEach((path) => {
+): PublishedEndpoint[] => {
+  return Object.keys(apiEndpoints).reduce<PublishedEndpoint[]>((apiReduced, path) => {
     const availableMethods = apiEndpoints[path];
-    Object.keys(availableMethods)
+
+    const pathEndpoints = Object.keys(availableMethods)
+      .filter((method) => allMethods.includes(method))
       .map((method) => method as EndpointMethod)
-      .forEach((method) => {
-        const endpoint = availableMethods[method]!;
-        const handlers = wrapHandler(endpoint);
+      .reduce<PublishedEndpoint[]>((pathReduced, method) => {
+        const handlers = wrapHandler(availableMethods[method]!);
+        const publishedEndpoint: PublishedEndpoint = {
+          handlers,
+          method,
+          path,
+        };
+
         (<express.Express>app)[method](path, ...handlers);
-      });
-  });
+
+        return pathReduced.concat([publishedEndpoint]);
+      }, []);
+
+    return apiReduced.concat(pathEndpoints);
+  }, []);
 };
 
 const wrapHandler = <T>(
