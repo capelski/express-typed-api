@@ -31,7 +31,6 @@ export enum EndpointMethod {
   put = 'put',
 }
 
-export type EndpointResponse<T> = {
-  payload: T;
-  status?: number;
-};
+export class EndpointResponse<T> {
+  constructor(public payload: T, public status?: number) {}
+}
