@@ -21,7 +21,9 @@
     "install:client": "cd client && npm install",
     "install:common": "cd common && npm install",
     "install:server": "cd server && npm install",
-    "postinstall": "npm run install:client && npm run install:common && npm run install:server"
+    "postinstall": "npm run install:client && npm run install:common && npm run install:server",
+    "test": "npm run test:server",
+    "test:server": "npm run test -w @express-typed-api/server"
   },
   "version": "1.0.0",
   "workspaces": [

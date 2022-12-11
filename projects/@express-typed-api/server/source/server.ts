@@ -12,36 +12,50 @@ export type PublishedEndpoint = {
   path: string;
 };
 
+type WrapHandler = <T>(
+  endpoint: EndpointHandler<T> | ComposedEndpointHandler<T>
+) => express.RequestHandler[];
+
 const allMethods: string[] = Object.values(EndpointMethod);
 
 export const publishApi = <T extends ApiEndpoints>(
   app: express.Express | express.Router,
   apiEndpoints: T
-): PublishedEndpoint[] => {
-  return Object.keys(apiEndpoints).reduce<PublishedEndpoint[]>((apiReduced, path) => {
-    const availableMethods = apiEndpoints[path];
-
-    const pathEndpoints = Object.keys(availableMethods)
-      .filter((method) => allMethods.includes(method))
-      .map((method) => method as EndpointMethod)
-      .reduce<PublishedEndpoint[]>((pathReduced, method) => {
-        const handlers = wrapHandler(availableMethods[method]!);
-        const publishedEndpoint: PublishedEndpoint = {
-          handlers,
-          method,
-          path,
-        };
-
-        (<express.Express>app)[method](path, ...handlers);
-
-        return pathReduced.concat([publishedEndpoint]);
-      }, []);
-
-    return apiReduced.concat(pathEndpoints);
-  }, []);
+) => {
+  return publishApiCore(wrapHandler)(app, apiEndpoints);
 };
 
-const wrapHandler = <T>(
+// Internal function for testing purposes
+export const publishApiCore =
+  (wrapHandlerDependency: WrapHandler) =>
+  <T extends ApiEndpoints>(
+    app: express.Express | express.Router,
+    apiEndpoints: T
+  ): PublishedEndpoint[] => {
+    return Object.keys(apiEndpoints).reduce<PublishedEndpoint[]>((apiReduced, path) => {
+      const availableMethods = apiEndpoints[path];
+
+      const pathEndpoints = Object.keys(availableMethods)
+        .filter((method) => allMethods.includes(method))
+        .map((method) => method as EndpointMethod)
+        .reduce<PublishedEndpoint[]>((pathReduced, method) => {
+          const handlers = wrapHandlerDependency(availableMethods[method]!);
+          const publishedEndpoint: PublishedEndpoint = {
+            handlers,
+            method,
+            path,
+          };
+
+          (<express.Express>app)[method](path, ...handlers);
+
+          return pathReduced.concat([publishedEndpoint]);
+        }, []);
+
+      return apiReduced.concat(pathEndpoints);
+    }, []);
+  };
+
+export const wrapHandler = <T>(
   endpoint: EndpointHandler<T> | ComposedEndpointHandler<T>
 ): express.RequestHandler[] => {
   const { handler, middleware } =

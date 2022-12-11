@@ -18,7 +18,8 @@
     "clean:modules": "rm -rf node_modules",
     "dev": "tsc -p ./tsconfig.server.json --watch",
     "prepack": "npm run build && cp ../../../README.md README.md",
-    "postpack": "rm README.md"
+    "postpack": "rm README.md",
+    "test": "cucumber-js --require-module ts-node/register --require source/**/*.step.ts source/**/*.feature"
   },
   "types": "distribution/index.d.ts",
   "version": "1.0.1"
