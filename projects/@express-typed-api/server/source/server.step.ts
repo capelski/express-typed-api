@@ -80,10 +80,10 @@ Then(
   /the express app "(.*)" method is called with "(.*)" and endpoint "(.*)"/,
   (method: EndpointMethod, path: string, name: string) => {
     const methodSpy = appSpies[method];
-    expect(methodSpy).to.not.equal(undefined, `Invalid method "${method}"`);
+    expect(methodSpy).not.to.equal(undefined, `Invalid method "${method}"`);
     const methodCall = methodSpy.spy.getCall(methodSpy.callIndex);
     methodSpy.callIndex++;
-    expect(methodCall).to.not.equal(
+    expect(methodCall).not.to.equal(
       null,
       `Method "${method}" was not called ${methodSpy.callIndex} time(s)`
     );
@@ -91,7 +91,7 @@ Then(
 
     const wrapHandlerCall = wrapHandlerSpy.spy.getCall(wrapHandlerSpy.callIndex);
     wrapHandlerSpy.callIndex++;
-    expect(wrapHandlerCall).to.not.equal(null);
+    expect(wrapHandlerCall).not.to.equal(null);
     const actualEndpoint = endpoints[path][method];
     expect(wrapHandlerCall.args[0]).to.equal(
       actualEndpoint.endpoint,
