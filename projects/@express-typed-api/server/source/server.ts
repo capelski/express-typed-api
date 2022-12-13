@@ -33,13 +33,12 @@ export const publishApiCore =
     apiEndpoints: T
   ): PublishedEndpoint[] => {
     return Object.keys(apiEndpoints).reduce<PublishedEndpoint[]>((apiReduced, path) => {
-      const availableMethods = apiEndpoints[path];
-
-      const pathEndpoints = Object.keys(availableMethods)
+      const pathMethods = apiEndpoints[path];
+      const pathEndpoints = Object.keys(pathMethods)
         .filter((method) => allMethods.includes(method))
         .map((method) => method as EndpointMethod)
         .reduce<PublishedEndpoint[]>((pathReduced, method) => {
-          const handlers = wrapHandlerDependency(availableMethods[method]!);
+          const handlers = wrapHandlerDependency(pathMethods[method]!);
           const publishedEndpoint: PublishedEndpoint = {
             handlers,
             method,
