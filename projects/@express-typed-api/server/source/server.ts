@@ -60,13 +60,15 @@ export const wrapHandler = <T>(
   const { handler, middleware } =
     'handler' in endpoint ? endpoint : { handler: endpoint, middleware: undefined };
 
-  const adapter: express.RequestHandler = (req, res, next) => {
-    const { payload, status } = handler(req, res, next);
-    if (status) {
-      res.status(status);
-    }
-    res.json(payload);
+  const adapter = {
+    [handler.name]: <express.RequestHandler>((req, res, next) => {
+      const { payload, status } = handler(req, res, next);
+      if (status) {
+        res.status(status);
+      }
+      res.json(payload);
+    }),
   };
 
-  return middleware ? middleware(adapter) : [adapter];
+  return middleware ? middleware(adapter[handler.name]) : [adapter[handler.name]];
 };
