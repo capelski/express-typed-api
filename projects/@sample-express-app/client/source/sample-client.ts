@@ -8,8 +8,9 @@ import {
 const typedFetch = getTypedFetch<WeatherApiEndpoints>();
 
 const cityNameInput = <HTMLInputElement>document.getElementById('city-name')!;
+const getWeatherByBodyButton = document.getElementById('get-weather-by-body')!;
 const getWeatherByQSButton = document.getElementById('get-weather-by-query-string')!;
-const getWeatherByParamButton = document.getElementById('get-weather-by-param')!;
+const getWeatherByURLParamButton = document.getElementById('get-weather-by-url-param')!;
 const errorMessage = document.getElementById('error-message')!;
 const cityHeader = document.getElementById('city-header')!;
 const icon = <HTMLImageElement>document.getElementById('icon')!;
@@ -47,6 +48,16 @@ const weatherFetchFactory =
     }
   };
 
+const bodyWeatherFetch = weatherFetchFactory((cityName) =>
+  typedFetch('/api/weather', {
+    body: JSON.stringify({ cityName }),
+    headers: { 'Content-Type': 'application/json' },
+    method: 'post',
+  })
+);
+
+getWeatherByBodyButton.addEventListener('click', bodyWeatherFetch);
+
 const queryStringWeatherFetch = weatherFetchFactory((cityName) =>
   typedFetch(
     '/api/weather',
@@ -73,4 +84,4 @@ const urlParamWeatherFetch = weatherFetchFactory((cityName) =>
   )
 );
 
-getWeatherByParamButton.addEventListener('click', urlParamWeatherFetch);
+getWeatherByURLParamButton.addEventListener('click', urlParamWeatherFetch);

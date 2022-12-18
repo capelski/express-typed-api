@@ -45,9 +45,17 @@ const weatherByUrlParam: EndpointHandler<GetWeatherEndpoint> = (req) => {
   return weatherLogic(req.params.cityName);
 };
 
+const weatherByBody: EndpointHandler<GetWeatherEndpoint> = (req) => {
+  return weatherLogic(req.body.cityName);
+};
+
 const weatherApi: WeatherApiEndpoints = {
   '/api/weather': {
     get: weatherByQueryString,
+    post: {
+      handler: weatherByBody,
+      middleware: (h) => [express.json(), h],
+    },
   },
   '/api/weather/:cityName': {
     get: weatherByUrlParam,
