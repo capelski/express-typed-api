@@ -1,6 +1,8 @@
-import { EndpointHandler, publishApi } from '@express-typed-api/server';
+import { EndpointResponse, publishApi } from '@express-typed-api/server';
 import {
-  GetWeatherEndpoint,
+  GetWeatherByJsonBody,
+  GetWeatherByQueryString,
+  GetWeatherByURLParam,
   validateCityName,
   Weather,
   WeatherApiEndpoints,
@@ -31,31 +33,31 @@ const weatherLogic = (cityName: string | undefined) => {
   const cityNameValidation = validateCityName(cityName);
 
   if (!cityNameValidation.valid) {
-    return { payload: { errorMessage: cityNameValidation.message }, status: 400 };
+    return new EndpointResponse({ errorMessage: cityNameValidation.message }, 400);
   }
-  return { payload: getRandomWeather() };
+  return new EndpointResponse(getRandomWeather());
 };
 
-const weatherByQueryString: EndpointHandler<GetWeatherEndpoint> = (req) => {
+const weatherByJsonBody: GetWeatherByJsonBody = {
+  handler: (req) => {
+    return weatherLogic(req.body.cityName);
+  },
+  middleware: (h) => [express.json(), h],
+};
+
+const weatherByQueryString: GetWeatherByQueryString = (req) => {
   const cityName = <string | undefined>req.query.cityName;
   return weatherLogic(cityName);
 };
 
-const weatherByUrlParam: EndpointHandler<GetWeatherEndpoint> = (req) => {
+const weatherByUrlParam: GetWeatherByURLParam = (req) => {
   return weatherLogic(req.params.cityName);
-};
-
-const weatherByBody: EndpointHandler<GetWeatherEndpoint> = (req) => {
-  return weatherLogic(req.body.cityName);
 };
 
 const weatherApi: WeatherApiEndpoints = {
   '/api/weather': {
     get: weatherByQueryString,
-    post: {
-      handler: weatherByBody,
-      middleware: (h) => [express.json(), h],
-    },
+    post: weatherByJsonBody,
   },
   '/api/weather/:cityName': {
     get: weatherByUrlParam,

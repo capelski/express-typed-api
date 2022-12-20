@@ -1,8 +1,8 @@
 import { getTypedFetch, TypedResponse } from '@express-typed-api/client';
 import {
-  GetWeatherEndpoint,
   validateCityName,
   WeatherApiEndpoints,
+  WeatherEndpointResponse,
 } from '@sample-express-app/common';
 
 const typedFetch = getTypedFetch<WeatherApiEndpoints>();
@@ -20,7 +20,7 @@ const maxTemperature = document.getElementById('max-temperature')!;
 const windSpeed = document.getElementById('wind-speed')!;
 
 const weatherFetchFactory =
-  (handler: (cityName: string) => Promise<TypedResponse<GetWeatherEndpoint>>) => async () => {
+  (handler: (cityName: string) => Promise<TypedResponse<WeatherEndpointResponse>>) => async () => {
     const cityName = cityNameInput.value;
     const cityNameValidation = validateCityName(cityName);
 

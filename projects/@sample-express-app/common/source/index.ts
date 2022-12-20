@@ -1,8 +1,1 @@
-export {
-  GetWeatherEndpoint,
-  validateCityName,
-  Validation,
-  Weather,
-  WeatherApiEndpoints,
-  WeatherIcons,
-} from './sample-common';
+export * from './sample-common';
