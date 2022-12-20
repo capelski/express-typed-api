@@ -1,8 +1,11 @@
 import { After, Before, Given, Then, When } from '@cucumber/cucumber';
-import { Dictionary } from '@express-typed-api/common';
 import { expect } from 'chai';
 import sinon, { SinonSpy } from 'sinon';
 import { getTypedFetchCore, TypedFetchArguments, TypedRequestInit } from './client';
+
+type Dictionary<TValue, TKey extends string | symbol | number = string> = {
+  [K in TKey]: TValue;
+};
 
 let fetchSpy: SinonSpy;
 let queryString: Dictionary<string>;

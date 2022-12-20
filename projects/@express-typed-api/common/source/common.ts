@@ -1,25 +1,31 @@
 import express from 'express';
+import {
+  EHRequestDefinition,
+  EHRequestPartialDefinition,
+  EndpointHandlerRequest,
+} from './request-types';
 
 export type AdditionalMiddleware = (handler: express.RequestHandler) => express.RequestHandler[];
 
 export type ApiEndpoints = {
   [path: string]: {
-    [method in EndpointMethod]?: EndpointHandler<any> | EndpointHandlerWithMiddleware<any>;
+    [method in EndpointMethod]?:
+      | EndpointHandler<any, EHRequestDefinition> // TODO EHRequestPartialDefinition?
+      | EndpointHandlerWithMiddleware<any, EHRequestDefinition>;
   };
 };
 
-export type Dictionary<TValue, TKey extends string | symbol | number = string> = {
-  [K in TKey]: TValue;
-};
-
-export type EndpointHandler<T> = (
-  req: express.Request,
+export type EndpointHandler<TResponse, TDefinition extends EHRequestPartialDefinition = {}> = (
+  req: EndpointHandlerRequest<TDefinition>,
   res: express.Response,
   next: express.NextFunction
-) => EndpointResponse<T>;
+) => EndpointResponse<TResponse>;
 
-export type EndpointHandlerWithMiddleware<T> = {
-  handler: EndpointHandler<T>;
+export type EndpointHandlerWithMiddleware<
+  TResponse,
+  TDefinition extends EHRequestPartialDefinition = {}
+> = {
+  handler: EndpointHandler<TResponse, TDefinition>;
   middleware: AdditionalMiddleware;
 };
 

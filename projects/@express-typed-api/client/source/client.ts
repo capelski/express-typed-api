@@ -1,16 +1,22 @@
 import {
   ApiEndpoints,
-  Dictionary,
-  EndpointHandler,
-  EndpointHandlerWithMiddleware,
+  EndpointHandlerRequestBody,
+  EndpointHandlerRequestParams,
+  EndpointHandlerRequestQuery,
+  EndpointHandlerResponse,
 } from '@express-typed-api/common';
+import express from 'express';
 
 export type TypedResponse<T> = Omit<Response, 'json'> & {
   json: () => Promise<T>;
 };
 
-export type TypedRequestInit<T> = RequestInit & {
-  method: T;
+export type TypedRequestInit<TMethod, TBody = express.Request['body']> = Omit<
+  Omit<RequestInit, 'body'>,
+  'method'
+> & {
+  body?: TBody;
+  method: TMethod;
 };
 
 export type TypedFetchArguments = Parameters<ReturnType<typeof getTypedFetchCore>>;
@@ -26,8 +32,11 @@ export const getTypedFetch = <T extends ApiEndpoints>() => {
 export const getTypedFetchCore = <T extends ApiEndpoints>(fetchDependency: Window['fetch']) => {
   return function typedFetch<TPath extends keyof T, TMethod extends keyof T[TPath]>(
     path: TPath,
-    init: TypedRequestInit<TMethod>,
-    options: { queryString?: Dictionary<string>; urlParams?: Dictionary<string> } = {}
+    init: TypedRequestInit<TMethod, EndpointHandlerRequestBody<T, TPath, TMethod>>,
+    options: {
+      queryString?: EndpointHandlerRequestQuery<T, TPath, TMethod>;
+      urlParams?: EndpointHandlerRequestParams<T, TPath, TMethod>;
+    } = {}
   ) {
     const queryUrl =
       options.queryString && Object.keys(options.queryString).length > 0
@@ -41,14 +50,10 @@ export const getTypedFetchCore = <T extends ApiEndpoints>(fetchDependency: Windo
         }, queryUrl)
       : queryUrl;
 
-    return fetchDependency(paramUrl, init) as Promise<
-      TypedResponse<
-        T[TPath][TMethod] extends EndpointHandler<infer U>
-          ? U
-          : T[TPath][TMethod] extends EndpointHandlerWithMiddleware<infer U>
-          ? U
-          : unknown
-      >
-    >;
+    return fetchDependency(paramUrl, {
+      ...init,
+      body: JSON.stringify(init.body),
+      method: <string>init.method,
+    }) as Promise<TypedResponse<EndpointHandlerResponse<T, TPath, TMethod>>>;
   };
 };
