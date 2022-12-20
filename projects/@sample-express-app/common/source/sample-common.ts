@@ -17,6 +17,8 @@ export type Weather = {
   windSpeed: number;
 };
 
+export type WeatherEndpointInput = { cityName: string };
+
 export type WeatherEndpointResponse =
   | {
       errorMessage: string;
@@ -35,11 +37,20 @@ export enum WeatherIcons {
   mist = '50d',
 }
 
-export type GetWeatherByJsonBody = EndpointHandlerWithMiddleware<WeatherEndpointResponse>;
+export type GetWeatherByJsonBody = EndpointHandlerWithMiddleware<
+  WeatherEndpointResponse,
+  { body: WeatherEndpointInput }
+>;
 
-export type GetWeatherByQueryString = EndpointHandler<WeatherEndpointResponse>;
+export type GetWeatherByQueryString = EndpointHandler<
+  WeatherEndpointResponse,
+  { query: WeatherEndpointInput }
+>;
 
-export type GetWeatherByURLParam = EndpointHandler<WeatherEndpointResponse>;
+export type GetWeatherByURLParam = EndpointHandler<
+  WeatherEndpointResponse,
+  { params: WeatherEndpointInput }
+>;
 
 export type WeatherApiEndpoints = {
   '/api/weather': {

@@ -40,7 +40,7 @@ const weatherLogic = (cityName: string | undefined) => {
 
 const weatherByJsonBody: GetWeatherByJsonBody = {
   handler: (req) => {
-    return weatherLogic(req.body.cityName);
+    return weatherLogic(req.body?.cityName);
   },
   middleware: (h) => [express.json(), h],
 };
