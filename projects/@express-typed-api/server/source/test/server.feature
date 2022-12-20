@@ -26,9 +26,9 @@ Feature: Publish api
       Then no method is called on the express app
       And no published endpoints are returned
 
-   Scenario: Composed endpoint handler
+   Scenario: Endpoint handler with middleware
       Given a new express app
-      And the API definition in "composed-endpoint-handler"
+      And the API definition in "middleware-endpoint-handler"
       When calling publishApi
       Then the express app "post" method is called with "/api/sample" and handlers "jsonParser,A"
       And the following published endpoints list is returned

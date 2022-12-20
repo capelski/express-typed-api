@@ -1,8 +1,8 @@
 import {
   ApiEndpoints,
-  ComposedEndpointHandler,
   Dictionary,
   EndpointHandler,
+  EndpointHandlerWithMiddleware,
 } from '@express-typed-api/common';
 
 export type TypedResponse<T> = Omit<Response, 'json'> & {
@@ -45,7 +45,7 @@ export const getTypedFetchCore = <T extends ApiEndpoints>(fetchDependency: Windo
       TypedResponse<
         T[TPath][TMethod] extends EndpointHandler<infer U>
           ? U
-          : T[TPath][TMethod] extends ComposedEndpointHandler<infer U>
+          : T[TPath][TMethod] extends EndpointHandlerWithMiddleware<infer U>
           ? U
           : unknown
       >

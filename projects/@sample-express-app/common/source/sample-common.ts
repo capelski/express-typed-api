@@ -1,4 +1,4 @@
-import { ComposedEndpointHandler, EndpointHandler } from '@express-typed-api/common';
+import { EndpointHandler, EndpointHandlerWithMiddleware } from '@express-typed-api/common';
 
 export type Validation =
   | {
@@ -38,7 +38,7 @@ export type GetWeatherEndpoint =
 export type WeatherApiEndpoints = {
   '/api/weather': {
     get: EndpointHandler<GetWeatherEndpoint>;
-    post: ComposedEndpointHandler<GetWeatherEndpoint>;
+    post: EndpointHandlerWithMiddleware<GetWeatherEndpoint>;
   };
   '/api/weather/:cityName': {
     get: EndpointHandler<GetWeatherEndpoint>;

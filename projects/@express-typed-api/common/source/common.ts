@@ -4,13 +4,8 @@ export type AdditionalMiddleware = (handler: express.RequestHandler) => express.
 
 export type ApiEndpoints = {
   [path: string]: {
-    [method in EndpointMethod]?: EndpointHandler<any> | ComposedEndpointHandler<any>;
+    [method in EndpointMethod]?: EndpointHandler<any> | EndpointHandlerWithMiddleware<any>;
   };
-};
-
-export type ComposedEndpointHandler<T> = {
-  handler: EndpointHandler<T>;
-  middleware: AdditionalMiddleware;
 };
 
 export type Dictionary<TValue, TKey extends string | symbol | number = string> = {
@@ -22,6 +17,11 @@ export type EndpointHandler<T> = (
   res: express.Response,
   next: express.NextFunction
 ) => EndpointResponse<T>;
+
+export type EndpointHandlerWithMiddleware<T> = {
+  handler: EndpointHandler<T>;
+  middleware: AdditionalMiddleware;
+};
 
 export enum EndpointMethod {
   delete = 'delete',

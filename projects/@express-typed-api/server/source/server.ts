@@ -1,7 +1,7 @@
 import {
   ApiEndpoints,
-  ComposedEndpointHandler,
   EndpointHandler,
+  EndpointHandlerWithMiddleware,
   EndpointMethod,
 } from '@express-typed-api/common';
 import express from 'express';
@@ -41,7 +41,7 @@ export const publishApi = <T extends ApiEndpoints>(
 };
 
 const wrapHandler = <T>(
-  endpoint: EndpointHandler<T> | ComposedEndpointHandler<T>
+  endpoint: EndpointHandler<T> | EndpointHandlerWithMiddleware<T>
 ): express.RequestHandler[] => {
   const { handler, middleware } =
     'handler' in endpoint ? endpoint : { handler: endpoint, middleware: undefined };
