@@ -1,14 +1,14 @@
 import { EndpointHandler, EndpointResponse } from '@express-typed-api/common';
 
-const A: EndpointHandler<any> = (_req, _res, _next) => new EndpointResponse('A');
+const A: EndpointHandler<string> = (_req, _res, _next) => new EndpointResponse('A');
 
-const B: EndpointHandler<any> = (_req, _res, _next) => new EndpointResponse('B');
+const B: EndpointHandler<string> = (_req, _res, _next) => new EndpointResponse('B');
 
-const C: EndpointHandler<any> = (_req, _res, _next) => new EndpointResponse('C');
+const C: EndpointHandler<string> = (_req, _res, _next) => new EndpointResponse('C');
 
-const D: EndpointHandler<any> = (_req, _res, _next) => new EndpointResponse('D');
+const D: EndpointHandler<string> = (_req, _res, _next) => new EndpointResponse('D');
 
-const E: EndpointHandler<any> = (_req, _res, _next) => new EndpointResponse('E');
+const E: EndpointHandler<string> = (_req, _res, _next) => new EndpointResponse('E');
 
 export const apiDefinition = {
   '/api/sample': {

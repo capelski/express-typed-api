@@ -3,7 +3,7 @@ import express from 'express';
 
 export const apiDefinition = {
   '/api/sample': {
-    post: <EndpointHandlerWithMiddleware<any>>{
+    post: <EndpointHandlerWithMiddleware<string>>{
       handler: function A(_req, _res, _next) {
         return new EndpointResponse('A');
       },
