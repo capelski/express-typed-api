@@ -1,8 +1,8 @@
-import { EndpointHandler, publishApi } from '@express-typed-api/server';
+import { publishApi } from '@express-typed-api/server';
 import express from 'express';
 import { GetWeatherEndpoint, WeatherApiEndpoints } from './readme-shared';
 
-const weatherEndpoint: EndpointHandler<GetWeatherEndpoint> = (req) => {
+const getWeatherEndpoint: GetWeatherEndpoint = (req) => {
   if (req.params.cityName.length < 3) {
     return {
       payload: { errorMessage: 'City name must have at least 3 characters' },
@@ -19,7 +19,7 @@ const weatherEndpoint: EndpointHandler<GetWeatherEndpoint> = (req) => {
 
 const weatherApi: WeatherApiEndpoints = {
   '/api/weather/:cityName': {
-    get: weatherEndpoint,
+    get: getWeatherEndpoint,
   },
 };
 

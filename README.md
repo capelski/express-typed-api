@@ -44,17 +44,18 @@ npm install --save @express-typed-api/common
 
 import { EndpointHandler } from '@express-typed-api/common';
 
-export type GetWeatherEndpoint =
+export type GetWeatherEndpoint = EndpointHandler<
   | {
       errorMessage: string;
     }
   | {
       /** ... */
-    };
+    }
+>;
 
 export type WeatherApiEndpoints = {
   '/api/weather/:cityName': {
-    get: EndpointHandler<GetWeatherEndpoint>;
+    get: GetWeatherEndpoint;
   };
 };
 ```
@@ -68,11 +69,11 @@ npm install --save @express-typed-api/server
 ```
 
 ```typescript
-import { EndpointHandler, publishApi } from '@express-typed-api/server';
+import { publishApi } from '@express-typed-api/server';
 import express from 'express';
 import { GetWeatherEndpoint, WeatherApiEndpoints } from './readme-shared';
 
-const weatherEndpoint: EndpointHandler<GetWeatherEndpoint> = (req) => {
+const getWeatherEndpoint: GetWeatherEndpoint = (req) => {
   if (req.params.cityName.length < 3) {
     return {
       payload: { errorMessage: 'City name must have at least 3 characters' },
@@ -89,7 +90,7 @@ const weatherEndpoint: EndpointHandler<GetWeatherEndpoint> = (req) => {
 
 const weatherApi: WeatherApiEndpoints = {
   '/api/weather/:cityName': {
-    get: weatherEndpoint,
+    get: getWeatherEndpoint,
   },
 };
 
@@ -117,8 +118,10 @@ export const fetchWeather = async (cityName: string) => {
   const response = await fetch(`/api/weather/${cityName}`, { method: 'get' });
   const payload = await response.json();
   if ('errorMessage' in payload) {
+    console.error(payload);
     // Deal with validation errors
   } else {
+    console.log(payload);
     // Deal with weather data
   }
 };
@@ -142,8 +145,10 @@ export const fetchWeather = async (cityName: string) => {
   );
   const payload = await response.json();
   if ('errorMessage' in payload) {
+    console.error(payload);
     // Deal with validation errors
   } else {
+    console.log(payload);
     // Deal with weather data
   }
 };
