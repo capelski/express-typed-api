@@ -5,6 +5,13 @@ allFiles=(
   "projects/@express-typed-api/client/package.json"
   "projects/@express-typed-api/server/package-lock.json"
   "projects/@express-typed-api/server/package.json"
+  "projects/@sample-express-app/package-lock.json"
+  "projects/@sample-express-app/client/package-lock.json"
+  "projects/@sample-express-app/client/package.json"
+  "projects/@sample-express-app/common/package-lock.json"
+  "projects/@sample-express-app/common/package.json"
+  "projects/@sample-express-app/server/package-lock.json"
+  "projects/@sample-express-app/server/package.json"
 );
 
 checkDiff() {
