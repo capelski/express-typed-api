@@ -38,7 +38,6 @@
     "install:sample": "cd projects/@sample-express-app && npm install",
     "link": "./link-create.sh",
     "postinstall": "npm run install:lib && npm run install:sample",
-    "publish:lib": "npm publish -w @express-typed-api/client -w @express-typed-api/common -w @express-typed-api/server",
     "test": "cd projects/@express-typed-api && npm run test",
     "unlink": "./link-destroy.sh"
   },
