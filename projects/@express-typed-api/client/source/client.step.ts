@@ -1,15 +1,12 @@
 import { After, Before, Given, Then, When } from '@cucumber/cucumber';
 import { expect } from 'chai';
+import express from 'express';
 import sinon, { SinonSpy } from 'sinon';
 import { getTypedFetchCore, TypedFetchArguments, TypedRequestInit } from './client';
 
-type Dictionary<TValue, TKey extends string | symbol | number = string> = {
-  [K in TKey]: TValue;
-};
-
 let fetchSpy: SinonSpy;
-let params: Dictionary<string>;
-let query: Dictionary<string>;
+let params: express.Request['params'];
+let query: express.Request['query'];
 let requestInit: TypedRequestInit<any>;
 let requestUrl: string;
 let typedFetch: (...args: TypedFetchArguments) => any;
