@@ -141,7 +141,7 @@ export const fetchWeather = async (cityName: string) => {
   const response = await typedFetch(
     '/api/weather/:cityName',
     { method: 'get' },
-    { urlParams: { cityName } }
+    { params: { cityName } }
   );
   const payload = await response.json();
   if ('errorMessage' in payload) {

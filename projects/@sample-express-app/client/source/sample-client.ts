@@ -63,7 +63,7 @@ const queryStringWeatherFetch = weatherFetchFactory((cityName) =>
     '/api/weather',
     { method: 'get' },
     {
-      queryString: {
+      query: {
         cityName,
       },
     }
@@ -77,7 +77,7 @@ const urlParamWeatherFetch = weatherFetchFactory((cityName) =>
     '/api/weather/:cityName',
     { method: 'get' },
     {
-      urlParams: {
+      params: {
         cityName,
       },
     }

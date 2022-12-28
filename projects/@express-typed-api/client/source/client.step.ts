@@ -8,19 +8,19 @@ type Dictionary<TValue, TKey extends string | symbol | number = string> = {
 };
 
 let fetchSpy: SinonSpy;
-let queryString: Dictionary<string>;
+let params: Dictionary<string>;
+let query: Dictionary<string>;
 let requestInit: TypedRequestInit<any>;
 let requestUrl: string;
 let typedFetch: (...args: TypedFetchArguments) => any;
-let urlParams: Dictionary<string>;
 
 Before(() => {
   fetchSpy = undefined!;
-  queryString = {};
+  params = {};
+  query = {};
   requestInit = { method: 'get' };
   requestUrl = undefined!;
   typedFetch = undefined!;
-  urlParams = {};
 });
 
 Given('an instance of typedFetch', () => {
@@ -36,15 +36,15 @@ Given(/a RequestInit object "(.*)"/, (name: string) => {
 });
 
 Given(/a queryString parameter "(.*)" with value "(.*)"/, (name: string, value: string) => {
-  queryString[name] = value;
+  query[name] = value;
 });
 
 Given(/a url parameter "(.*)" with value "(.*)"/, (name: string, value: string) => {
-  urlParams[name] = value;
+  params[name] = value;
 });
 
 When('calling typedFetch with the described parameters', () => {
-  typedFetch(requestUrl, requestInit, { queryString, urlParams });
+  typedFetch(requestUrl, requestInit, { query, params });
 });
 
 Then('window.fetch is called', () => {
