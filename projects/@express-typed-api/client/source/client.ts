@@ -38,19 +38,19 @@ export const getTypedFetchCore = <T extends ApiEndpoints>(fetchDependency: Windo
       query?: EndpointHandlerRequestQuery<T, TPath, TMethod>;
     } = {}
   ) {
-    const queryUrl =
-      options.query && Object.keys(options.query).length > 0
-        ? <string>path + '?' + new URLSearchParams(options.query).toString()
-        : <string>path;
-
     const paramUrl = options.params
       ? Object.keys(options.params).reduce((reduced, paramName) => {
           const paramValue = options.params![paramName];
           return reduced.replace(`:${paramName}`, paramValue);
-        }, queryUrl)
-      : queryUrl;
+        }, <string>path)
+      : <string>path;
 
-    return fetchDependency(paramUrl, {
+    const queryUrl =
+      options.query && Object.keys(options.query).length > 0
+        ? paramUrl + '?' + new URLSearchParams(options.query).toString()
+        : paramUrl;
+
+    return fetchDependency(queryUrl, {
       ...init,
       body: JSON.stringify(init.body),
       method: <string>init.method,
