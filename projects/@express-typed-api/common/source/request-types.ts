@@ -49,26 +49,15 @@ export type QueryOnly<TQuery> = {
   query: TQuery;
 };
 
-export type BodyParams<TBody, TParams> = {
-  body: TBody;
-  params: TParams;
-};
+export type BodyParams<TBody, TParams> = BodyOnly<TBody> & ParamsOnly<TParams>;
 
-export type BodyQuery<TBody, TQuery> = {
-  body: TBody;
-  query: TQuery;
-};
+export type BodyQuery<TBody, TQuery> = BodyOnly<TBody> & QueryOnly<TQuery>;
 
-export type ParamsQuery<TParams, TQuery> = {
-  params: TParams;
-  query: TQuery;
-};
+export type ParamsQuery<TParams, TQuery> = ParamsOnly<TParams> & QueryOnly<TQuery>;
 
-export type BodyParamsQuery<TBody, TParams, TQuery> = {
-  body: TBody;
-  params: TParams;
-  query: TQuery;
-};
+export type BodyParamsQuery<TBody, TParams, TQuery> = BodyOnly<TBody> &
+  ParamsOnly<TParams> &
+  QueryOnly<TQuery>;
 
 export type EHRequestPartialDefinition =
   | {}
