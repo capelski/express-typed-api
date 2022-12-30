@@ -1,39 +1,39 @@
 import express from 'express';
 import { ApiEndpoints, EndpointHandler, EndpointHandlerWithMiddleware } from './common';
 
-export type EndpointHandlerRequest<TP extends EHRequestPartialDefinition> = Omit<
+export type EndpointHandlerRequest<TDefinition extends EHRequestPartialDefinition> = Omit<
   Omit<Omit<express.Request, 'body'>, 'params'>,
   'query'
 > &
-  EHRequestDefinition<TP>;
+  EHRequestDefinition<TDefinition>;
 
 export type EndpointHandlerRequestBody<
-  T extends ApiEndpoints,
-  TPath extends keyof T,
-  TMethod extends keyof T[TPath]
-> = EndpointHandlerRequestMembers<T, TPath, TMethod>['body'];
+  TApi extends ApiEndpoints,
+  TPath extends keyof TApi,
+  TMethod extends keyof TApi[TPath]
+> = EndpointHandlerRequestMembers<TApi, TPath, TMethod>['body'];
 
 type EndpointHandlerRequestMembers<
-  T extends ApiEndpoints,
-  TPath extends keyof T,
-  TMethod extends keyof T[TPath]
-> = T[TPath][TMethod] extends EndpointHandler<infer _X, infer TMembers>
+  TApi extends ApiEndpoints,
+  TPath extends keyof TApi,
+  TMethod extends keyof TApi[TPath]
+> = TApi[TPath][TMethod] extends EndpointHandler<infer _X, infer TMembers>
   ? EHRequestDefinition<TMembers>
-  : T[TPath][TMethod] extends EndpointHandlerWithMiddleware<infer _X, infer TMembers>
+  : TApi[TPath][TMethod] extends EndpointHandlerWithMiddleware<infer _X, infer TMembers>
   ? EHRequestDefinition<TMembers>
   : EHRequestDefinition;
 
 export type EndpointHandlerRequestParams<
-  T extends ApiEndpoints,
-  TPath extends keyof T,
-  TMethod extends keyof T[TPath]
-> = EndpointHandlerRequestMembers<T, TPath, TMethod>['params'];
+  TApi extends ApiEndpoints,
+  TPath extends keyof TApi,
+  TMethod extends keyof TApi[TPath]
+> = EndpointHandlerRequestMembers<TApi, TPath, TMethod>['params'];
 
 export type EndpointHandlerRequestQuery<
-  T extends ApiEndpoints,
-  TPath extends keyof T,
-  TMethod extends keyof T[TPath]
-> = EndpointHandlerRequestMembers<T, TPath, TMethod>['query'];
+  TApi extends ApiEndpoints,
+  TPath extends keyof TApi,
+  TMethod extends keyof TApi[TPath]
+> = EndpointHandlerRequestMembers<TApi, TPath, TMethod>['query'];
 
 /* Partial request members types */
 

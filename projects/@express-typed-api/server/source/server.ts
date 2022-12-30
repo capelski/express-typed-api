@@ -14,9 +14,9 @@ export type PublishedEndpoint = {
 
 const allMethods: string[] = Object.values(EndpointMethod);
 
-export const publishApi = <T extends ApiEndpoints>(
+export const publishApi = <TApi extends ApiEndpoints>(
   app: express.Express | express.Router,
-  apiEndpoints: T
+  apiEndpoints: TApi
 ): PublishedEndpoint[] => {
   return Object.keys(apiEndpoints).reduce<PublishedEndpoint[]>((apiReduced, path) => {
     const pathMethods = apiEndpoints[path];

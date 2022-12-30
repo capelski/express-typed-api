@@ -21,21 +21,21 @@ export type TypedRequestInit<TMethod, TBody = express.Request['body']> = Omit<
 
 export type TypedFetchArguments = Parameters<ReturnType<typeof getTypedFetchCore>>;
 
-export const getTypedFetch = <T extends ApiEndpoints>() => {
+export const getTypedFetch = <TApi extends ApiEndpoints>() => {
   if (typeof fetch === 'undefined') {
     throw new Error('fetch is not available in this context. Are you running it on a browser?');
   }
-  return getTypedFetchCore<T>(fetch);
+  return getTypedFetchCore<TApi>(fetch);
 };
 
 // Internal function for testing purposes
-export const getTypedFetchCore = <T extends ApiEndpoints>(fetchDependency: Window['fetch']) => {
-  return function typedFetch<TPath extends keyof T, TMethod extends keyof T[TPath]>(
+export const getTypedFetchCore = <TApi extends ApiEndpoints>(fetchDependency: Window['fetch']) => {
+  return function typedFetch<TPath extends keyof TApi, TMethod extends keyof TApi[TPath]>(
     path: TPath,
-    init: TypedRequestInit<TMethod, EndpointHandlerRequestBody<T, TPath, TMethod>>,
+    init: TypedRequestInit<TMethod, EndpointHandlerRequestBody<TApi, TPath, TMethod>>,
     options: {
-      params?: EndpointHandlerRequestParams<T, TPath, TMethod>;
-      query?: EndpointHandlerRequestQuery<T, TPath, TMethod>;
+      params?: EndpointHandlerRequestParams<TApi, TPath, TMethod>;
+      query?: EndpointHandlerRequestQuery<TApi, TPath, TMethod>;
     } = {}
   ) {
     const paramUrl = options.params
@@ -54,6 +54,6 @@ export const getTypedFetchCore = <T extends ApiEndpoints>(fetchDependency: Windo
       ...init,
       body: JSON.stringify(init.body),
       method: <string>init.method,
-    }) as Promise<TypedResponse<EndpointHandlerResponse<T, TPath, TMethod>>>;
+    }) as Promise<TypedResponse<EndpointHandlerResponse<TApi, TPath, TMethod>>>;
   };
 };
