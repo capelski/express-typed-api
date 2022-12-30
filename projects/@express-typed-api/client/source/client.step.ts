@@ -3,18 +3,18 @@ import { EndpointHandler, EndpointMethod } from '@express-typed-api/common';
 import { expect } from 'chai';
 import express from 'express';
 import sinon, { SinonSpy } from 'sinon';
-import { getTypedFetchCore, TypedRequestInit } from './client';
+import { getTypedFetchCore, TypedRequestInitWithBody } from './client';
 
 type TestApi = {
   [path: string]: {
-    [method in EndpointMethod]: EndpointHandler<any>;
+    [method in EndpointMethod]: EndpointHandler<any, { body: any; params: any; query: any }>;
   };
 };
 
 let fetchSpy: SinonSpy;
 let params: express.Request['params'];
 let query: express.Request['query'];
-let requestInit: TypedRequestInit<any>;
+let requestInit: TypedRequestInitWithBody<any, any>;
 let requestUrl: string;
 let typedFetch: (...args: Parameters<ReturnType<typeof getTypedFetchCore<TestApi>>>) => any;
 
@@ -22,7 +22,7 @@ Before(() => {
   fetchSpy = undefined!;
   params = {};
   query = {};
-  requestInit = { method: 'get' };
+  requestInit = { body: undefined, method: 'get' };
   requestUrl = undefined!;
   typedFetch = undefined!;
 });
@@ -48,7 +48,11 @@ Given(/a url parameter "(.*)" with value "(.*)"/, (name: string, value: string) 
 });
 
 When('calling typedFetch with the described parameters', () => {
-  typedFetch(requestUrl, requestInit, { query, params });
+  typedFetch({
+    path: requestUrl,
+    init: requestInit,
+    options: { query, params },
+  });
 });
 
 Then('window.fetch is called', () => {

@@ -49,39 +49,42 @@ const weatherFetchFactory =
   };
 
 const bodyWeatherFetch = weatherFetchFactory((cityName) =>
-  typedFetch('/api/weather', {
-    body: { cityName },
-    headers: { 'Content-Type': 'application/json' },
-    method: 'post',
+  typedFetch({
+    path: '/api/weather',
+    init: {
+      body: { cityName },
+      headers: { 'Content-Type': 'application/json' },
+      method: 'post',
+    },
   })
 );
 
 getWeatherByBodyButton.addEventListener('click', bodyWeatherFetch);
 
 const queryStringWeatherFetch = weatherFetchFactory((cityName) =>
-  typedFetch(
-    '/api/weather',
-    { method: 'get' },
-    {
+  typedFetch({
+    path: '/api/weather',
+    init: { method: 'get' },
+    options: {
       query: {
         cityName,
       },
-    }
-  )
+    },
+  })
 );
 
 getWeatherByQSButton.addEventListener('click', queryStringWeatherFetch);
 
 const urlParamWeatherFetch = weatherFetchFactory((cityName) =>
-  typedFetch(
-    '/api/weather/:cityName',
-    { method: 'get' },
-    {
+  typedFetch({
+    path: '/api/weather/:cityName',
+    init: { method: 'get' },
+    options: {
       params: {
         cityName,
       },
-    }
-  )
+    },
+  })
 );
 
 getWeatherByURLParamButton.addEventListener('click', urlParamWeatherFetch);
