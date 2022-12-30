@@ -19,8 +19,6 @@ export type TypedRequestInit<TMethod, TBody = express.Request['body']> = Omit<
   method: TMethod;
 };
 
-export type TypedFetchArguments = Parameters<ReturnType<typeof getTypedFetchCore>>;
-
 export const getTypedFetch = <TApi extends ApiEndpoints>() => {
   if (typeof fetch === 'undefined') {
     throw new Error('fetch is not available in this context. Are you running it on a browser?');

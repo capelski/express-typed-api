@@ -1,15 +1,22 @@
 import { After, Before, Given, Then, When } from '@cucumber/cucumber';
+import { EndpointHandler, EndpointMethod } from '@express-typed-api/common';
 import { expect } from 'chai';
 import express from 'express';
 import sinon, { SinonSpy } from 'sinon';
-import { getTypedFetchCore, TypedFetchArguments, TypedRequestInit } from './client';
+import { getTypedFetchCore, TypedRequestInit } from './client';
+
+type TestApi = {
+  [path: string]: {
+    [method in EndpointMethod]: EndpointHandler<any>;
+  };
+};
 
 let fetchSpy: SinonSpy;
 let params: express.Request['params'];
 let query: express.Request['query'];
 let requestInit: TypedRequestInit<any>;
 let requestUrl: string;
-let typedFetch: (...args: TypedFetchArguments) => any;
+let typedFetch: (...args: Parameters<ReturnType<typeof getTypedFetchCore<TestApi>>>) => any;
 
 Before(() => {
   fetchSpy = undefined!;
@@ -21,7 +28,7 @@ Before(() => {
 });
 
 Given('an instance of typedFetch', () => {
-  (fetchSpy = sinon.spy()), (typedFetch = getTypedFetchCore(fetchSpy));
+  (fetchSpy = sinon.spy()), (typedFetch = getTypedFetchCore<TestApi>(fetchSpy));
 });
 
 Given(/a url "(.*)"/, (url: string) => {
