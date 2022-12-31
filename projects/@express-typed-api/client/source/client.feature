@@ -45,3 +45,10 @@ Feature: Get typed fetch
       When calling typedFetch with the described parameters
       Then window.fetch is called
       And gets url "/sample/856c96ae-60ee-4b9d-8565-41682bbf87af?name=John" as first parameter
+
+   Scenario: Fetch request with body
+      Given an instance of typedFetch
+      And a body object containing a "city" property with value "Madrid"
+      When calling typedFetch with the described parameters
+      Then window.fetch is called
+      And gets '{"city":"Madrid"}' as the body property of the second parameter

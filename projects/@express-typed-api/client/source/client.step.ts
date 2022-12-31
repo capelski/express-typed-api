@@ -47,6 +47,14 @@ Given(/a url parameter "(.*)" with value "(.*)"/, (name: string, value: string) 
   params[name] = value;
 });
 
+Given(
+  /a body object containing a "(.*)" property with value "(.*)"/,
+  (name: string, value: string) => {
+    requestInit.body = requestInit.body || {};
+    requestInit.body[name] = value;
+  }
+);
+
 When('calling typedFetch with the described parameters', () => {
   typedFetch({
     path: requestUrl,
@@ -72,6 +80,13 @@ Then(/gets RequestInit object "(.*)" as second parameter/, (name: string) => {
   expect(call).not.to.equal(null, `window.fetch was not called`);
 
   expect(call.args[1].method).to.equal(name);
+});
+
+Then(/gets '(.*)' as the body property of the second parameter/, (body: string) => {
+  const call = fetchSpy.getCall(0);
+  expect(call).not.to.equal(null, `window.fetch was not called`);
+
+  expect(call.args[1].body).to.equal(body);
 });
 
 After(() => {
