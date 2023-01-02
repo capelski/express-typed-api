@@ -12,20 +12,20 @@ import {
   ParamsQuery,
   QueryOnly,
 } from '@express-typed-api/common';
-import express from 'express';
+
+export type Dictionary<TValue, TKey extends string | symbol | number = string> = {
+  [K in TKey]: TValue;
+};
 
 export type TypedResponse<T> = Omit<Response, 'json'> & {
   json: () => Promise<T>;
 };
 
-export type TypedRequestInit<TMethod> = Omit<Omit<RequestInit, 'body'>, 'method'> & {
+export type TypedRequestInit<TMethod> = Omit<RequestInit, 'method'> & {
   method: TMethod;
 };
 
-export type TypedRequestInitWithBody<
-  TMethod,
-  TBody = express.Request['body']
-> = TypedRequestInit<TMethod> & {
+export type TypedRequestInitWithBody<TMethod, TBody> = Omit<TypedRequestInit<TMethod>, 'body'> & {
   body: TBody;
 };
 
@@ -54,10 +54,12 @@ type EHClientArgumentsInternal<
   ? {
       init: TypedRequestInitWithBody<TMethod, TBody>;
       params: TParams;
+      query?: Dictionary<string>;
     }
   : TDefinition extends BodyQuery<infer TBody, infer TQuery>
   ? {
       init: TypedRequestInitWithBody<TMethod, TBody>;
+      params?: Dictionary<string>;
       query: TQuery;
     }
   : TDefinition extends ParamsQuery<infer TParams, infer TQuery>
@@ -69,19 +71,25 @@ type EHClientArgumentsInternal<
   : TDefinition extends BodyOnly<infer TBody>
   ? {
       init: TypedRequestInitWithBody<TMethod, TBody>;
+      params?: Dictionary<string>;
+      query?: Dictionary<string>;
     }
   : TDefinition extends ParamsOnly<infer TParams>
   ? {
       init: TypedRequestInit<TMethod>;
       params: TParams;
+      query?: Dictionary<string>;
     }
   : TDefinition extends QueryOnly<infer TQuery>
   ? {
       init: TypedRequestInit<TMethod>;
+      params?: Dictionary<string>;
       query: TQuery;
     }
   : {
       init: TypedRequestInit<TMethod>;
+      params?: Dictionary<string>;
+      query?: Dictionary<string>;
     });
 
 export const getTypedFetch = <TApi extends ApiEndpoints>() => {
