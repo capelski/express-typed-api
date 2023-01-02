@@ -59,7 +59,8 @@ When('calling typedFetch with the described parameters', () => {
   typedFetch({
     path: requestUrl,
     init: requestInit,
-    options: { query, params },
+    params,
+    query,
   });
 });
 

@@ -47,32 +47,24 @@ type EHClientArgumentsInternal<
 > = { path: TPath } & (TDefinition extends BodyParamsQuery<infer TBody, infer TParams, infer TQuery>
   ? {
       init: TypedRequestInitWithBody<TMethod, TBody>;
-      options: {
-        params: TParams;
-        query: TQuery;
-      };
+      params: TParams;
+      query: TQuery;
     }
   : TDefinition extends BodyParams<infer TBody, infer TParams>
   ? {
       init: TypedRequestInitWithBody<TMethod, TBody>;
-      options: {
-        params: TParams;
-      };
+      params: TParams;
     }
   : TDefinition extends BodyQuery<infer TBody, infer TQuery>
   ? {
       init: TypedRequestInitWithBody<TMethod, TBody>;
-      options: {
-        query: TQuery;
-      };
+      query: TQuery;
     }
   : TDefinition extends ParamsQuery<infer TParams, infer TQuery>
   ? {
       init: TypedRequestInit<TMethod>;
-      options: {
-        params: TParams;
-        query: TQuery;
-      };
+      params: TParams;
+      query: TQuery;
     }
   : TDefinition extends BodyOnly<infer TBody>
   ? {
@@ -81,16 +73,12 @@ type EHClientArgumentsInternal<
   : TDefinition extends ParamsOnly<infer TParams>
   ? {
       init: TypedRequestInit<TMethod>;
-      options: {
-        params: TParams;
-      };
+      params: TParams;
     }
   : TDefinition extends QueryOnly<infer TQuery>
   ? {
       init: TypedRequestInit<TMethod>;
-      options: {
-        query: TQuery;
-      };
+      query: TQuery;
     }
   : {
       init: TypedRequestInit<TMethod>;
@@ -110,9 +98,8 @@ export const getTypedFetchCore = <TApi extends ApiEndpoints>(fetchDependency: Wi
   ) {
     const { init, path } = args;
     const body = 'body' in init ? init.body : undefined;
-    const options = 'options' in args ? args.options : undefined;
-    const params = options && 'params' in options ? options.params : undefined;
-    const query = options && 'query' in options ? options.query : undefined;
+    const params = 'params' in args ? args.params : undefined;
+    const query = 'query' in args ? args.query : undefined;
 
     const paramUrl = params
       ? Object.keys(params).reduce((reduced, paramName) => {
