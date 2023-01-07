@@ -43,7 +43,8 @@ const weatherFetchFactory =
       } else {
         errorMessage.innerText = payload.errorMessage;
       }
-    } catch (_networkError) {
+    } catch (error) {
+      console.error(error);
       errorMessage.innerText = 'Network error';
     }
   };
