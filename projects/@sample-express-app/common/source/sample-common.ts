@@ -39,7 +39,7 @@ export enum WeatherIcons {
 
 export type GetWeatherByJsonBody = EndpointHandlerWithMiddleware<
   WeatherEndpointResponse,
-  { body: WeatherEndpointInput }
+  { jsonBody: WeatherEndpointInput }
 >;
 
 export type GetWeatherByQueryString = EndpointHandler<

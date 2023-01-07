@@ -1,15 +1,15 @@
 import {
   ApiEndpoints,
-  BodyOnly,
-  BodyParams,
-  BodyParamsQuery,
-  BodyQuery,
+  JsonBodyOnly,
+  JsonBody_Params,
+  JsonBody_Params_Query,
+  JsonBody_Query,
   EHRequestDefinition,
   EndpointHandler,
   EndpointHandlerResponse,
   EndpointHandlerWithMiddleware,
   ParamsOnly,
-  ParamsQuery,
+  Params_Query,
   QueryOnly,
 } from '@express-typed-api/common';
 
@@ -25,8 +25,11 @@ export type TypedRequestInit<TMethod> = Omit<RequestInit, 'method'> & {
   method: TMethod;
 };
 
-export type TypedRequestInitWithBody<TMethod, TBody> = Omit<TypedRequestInit<TMethod>, 'body'> & {
-  body: TBody;
+export type TypedRequestInitJsonBody<TMethod> = Omit<TypedRequestInit<TMethod>, 'body'> & {
+  headers: {
+    'Content-Type': 'application/json';
+    [key: string]: string;
+  };
 };
 
 export type EHClientArguments<
@@ -44,33 +47,41 @@ type EHClientArgumentsInternal<
   TPath extends keyof TApi,
   TMethod extends keyof TApi[TPath],
   TDefinition extends EHRequestDefinition = {}
-> = { path: TPath } & (TDefinition extends BodyParamsQuery<infer TBody, infer TParams, infer TQuery>
+> = { path: TPath } & (TDefinition extends JsonBody_Params_Query<
+  infer TBody,
+  infer TParams,
+  infer TQuery
+>
   ? {
-      init: TypedRequestInitWithBody<TMethod, TBody>;
+      init: TypedRequestInitJsonBody<TMethod>;
+      jsonBody: TBody;
       params: TParams;
       query: TQuery;
     }
-  : TDefinition extends BodyParams<infer TBody, infer TParams>
+  : TDefinition extends JsonBody_Params<infer TBody, infer TParams>
   ? {
-      init: TypedRequestInitWithBody<TMethod, TBody>;
+      init: TypedRequestInitJsonBody<TMethod>;
+      jsonBody: TBody;
       params: TParams;
       query?: Dictionary<string>;
     }
-  : TDefinition extends BodyQuery<infer TBody, infer TQuery>
+  : TDefinition extends JsonBody_Query<infer TBody, infer TQuery>
   ? {
-      init: TypedRequestInitWithBody<TMethod, TBody>;
+      init: TypedRequestInitJsonBody<TMethod>;
+      jsonBody: TBody;
       params?: Dictionary<string>;
       query: TQuery;
     }
-  : TDefinition extends ParamsQuery<infer TParams, infer TQuery>
+  : TDefinition extends Params_Query<infer TParams, infer TQuery>
   ? {
       init: TypedRequestInit<TMethod>;
       params: TParams;
       query: TQuery;
     }
-  : TDefinition extends BodyOnly<infer TBody>
+  : TDefinition extends JsonBodyOnly<infer TBody>
   ? {
-      init: TypedRequestInitWithBody<TMethod, TBody>;
+      init: TypedRequestInitJsonBody<TMethod>;
+      jsonBody: TBody;
       params?: Dictionary<string>;
       query?: Dictionary<string>;
     }
@@ -105,7 +116,7 @@ export const getTypedFetchCore = <TApi extends ApiEndpoints>(fetchDependency: Wi
     args: EHClientArguments<TApi, TPath, TMethod>
   ) {
     const { init, path } = args;
-    const body = 'body' in init ? init.body : undefined;
+    const jsonBody = 'jsonBody' in args ? args.jsonBody : undefined;
     const params = 'params' in args ? args.params : undefined;
     const query = 'query' in args ? args.query : undefined;
 
@@ -121,9 +132,11 @@ export const getTypedFetchCore = <TApi extends ApiEndpoints>(fetchDependency: Wi
         ? paramUrl + '?' + new URLSearchParams(query).toString()
         : paramUrl;
 
+    const body = jsonBody ? JSON.stringify(jsonBody) : 'body' in init ? init.body : undefined;
+
     return fetchDependency(queryUrl, {
       ...init,
-      body: body ? JSON.stringify(body) : undefined,
+      body,
       method: <string>init.method,
     }) as Promise<TypedResponse<EndpointHandlerResponse<TApi, TPath, TMethod>>>;
   };

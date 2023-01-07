@@ -52,10 +52,10 @@ const bodyWeatherFetch = weatherFetchFactory((cityName) =>
   typedFetch({
     path: '/api/weather',
     init: {
-      body: { cityName },
       headers: { 'Content-Type': 'application/json' },
       method: 'post',
     },
+    jsonBody: { cityName },
   })
 );
 

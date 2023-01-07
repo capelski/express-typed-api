@@ -3,26 +3,33 @@ import { EndpointHandler, EndpointMethod } from '@express-typed-api/common';
 import { expect } from 'chai';
 import express from 'express';
 import sinon, { SinonSpy } from 'sinon';
-import { getTypedFetchCore, TypedRequestInitWithBody } from './client';
+import { getTypedFetchCore, TypedRequestInitJsonBody } from './client';
 
 type TestApi = {
   [path: string]: {
-    [method in EndpointMethod]: EndpointHandler<any, { body: any; params: any; query: any }>;
+    [method in EndpointMethod]: EndpointHandler<any, { jsonBody: any; params: any; query: any }>;
   };
 };
 
 let fetchSpy: SinonSpy;
+let jsonBody: express.Request['body'];
 let params: express.Request['params'];
 let query: express.Request['query'];
-let requestInit: TypedRequestInitWithBody<any, any>;
+let requestInit: TypedRequestInitJsonBody<any>;
 let requestUrl: string;
 let typedFetch: (...args: Parameters<ReturnType<typeof getTypedFetchCore<TestApi>>>) => any;
 
 Before(() => {
   fetchSpy = undefined!;
+  jsonBody = undefined;
   params = {};
   query = {};
-  requestInit = { body: undefined, method: 'get' };
+  requestInit = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'get',
+  };
   requestUrl = undefined!;
   typedFetch = undefined!;
 });
@@ -50,8 +57,8 @@ Given(/a url parameter "(.*)" with value "(.*)"/, (name: string, value: string) 
 Given(
   /a body object containing a "(.*)" property with value "(.*)"/,
   (name: string, value: string) => {
-    requestInit.body = requestInit.body || {};
-    requestInit.body[name] = value;
+    jsonBody = jsonBody || {};
+    jsonBody[name] = value;
   }
 );
 
@@ -59,6 +66,7 @@ When('calling typedFetch with the described parameters', () => {
   typedFetch({
     path: requestUrl,
     init: requestInit,
+    jsonBody,
     params,
     query,
   });

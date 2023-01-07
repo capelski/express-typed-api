@@ -1,5 +1,5 @@
-export type BodyOnly<TBody> = {
-  body: TBody;
+export type JsonBodyOnly<TJsonBody> = {
+  jsonBody: TJsonBody;
 };
 
 export type ParamsOnly<TParams> = {
@@ -10,22 +10,22 @@ export type QueryOnly<TQuery> = {
   query: TQuery;
 };
 
-export type BodyParams<TBody, TParams> = BodyOnly<TBody> & ParamsOnly<TParams>;
+export type JsonBody_Params<TJsonBody, TParams> = JsonBodyOnly<TJsonBody> & ParamsOnly<TParams>;
 
-export type BodyQuery<TBody, TQuery> = BodyOnly<TBody> & QueryOnly<TQuery>;
+export type JsonBody_Query<TJsonBody, TQuery> = JsonBodyOnly<TJsonBody> & QueryOnly<TQuery>;
 
-export type ParamsQuery<TParams, TQuery> = ParamsOnly<TParams> & QueryOnly<TQuery>;
+export type Params_Query<TParams, TQuery> = ParamsOnly<TParams> & QueryOnly<TQuery>;
 
-export type BodyParamsQuery<TBody, TParams, TQuery> = BodyOnly<TBody> &
+export type JsonBody_Params_Query<TJsonBody, TParams, TQuery> = JsonBodyOnly<TJsonBody> &
   ParamsOnly<TParams> &
   QueryOnly<TQuery>;
 
 export type EHRequestDefinition =
   | {}
-  | BodyOnly<any>
+  | JsonBodyOnly<any>
   | ParamsOnly<any>
   | QueryOnly<any>
-  | BodyParams<any, any>
-  | BodyQuery<any, any>
-  | ParamsQuery<any, any>
-  | BodyParamsQuery<any, any, any>;
+  | JsonBody_Params<any, any>
+  | JsonBody_Query<any, any>
+  | Params_Query<any, any>
+  | JsonBody_Params_Query<any, any, any>;

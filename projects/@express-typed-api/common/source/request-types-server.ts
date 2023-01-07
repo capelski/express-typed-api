@@ -1,12 +1,12 @@
 import express from 'express';
 import {
-  BodyOnly,
-  BodyParams,
-  BodyParamsQuery,
-  BodyQuery,
+  JsonBodyOnly,
+  JsonBody_Params,
+  JsonBody_Params_Query,
+  JsonBody_Query,
   EHRequestDefinition,
   ParamsOnly,
-  ParamsQuery,
+  Params_Query,
   QueryOnly,
 } from './request-types-definition';
 
@@ -14,31 +14,31 @@ export type EHServerRequest<TDefinition extends EHRequestDefinition = {}> = Unty
   ServerRequestMembers<TDefinition>;
 
 export type ServerRequestMembers<TDefinition extends EHRequestDefinition = {}> =
-  TDefinition extends BodyParamsQuery<infer TBody, infer TParams, infer TQuery>
+  TDefinition extends JsonBody_Params_Query<infer TBody, infer TParams, infer TQuery>
     ? {
         body: TBody | undefined;
         params: TParams;
         query: TQuery;
       }
-    : TDefinition extends BodyParams<infer TBody, infer TParams>
+    : TDefinition extends JsonBody_Params<infer TBody, infer TParams>
     ? {
         body: TBody | undefined;
         params: TParams;
         query: express.Request['query'];
       }
-    : TDefinition extends BodyQuery<infer TBody, infer TQuery>
+    : TDefinition extends JsonBody_Query<infer TBody, infer TQuery>
     ? {
         body: TBody | undefined;
         params: express.Request['params'];
         query: TQuery;
       }
-    : TDefinition extends ParamsQuery<infer TParams, infer TQuery>
+    : TDefinition extends Params_Query<infer TParams, infer TQuery>
     ? {
         body: express.Request['body'];
         params: TParams;
         query: TQuery;
       }
-    : TDefinition extends BodyOnly<infer TBody>
+    : TDefinition extends JsonBodyOnly<infer TBody>
     ? {
         body: TBody | undefined;
         params: express.Request['params'];
