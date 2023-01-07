@@ -1,7 +1,7 @@
 import { getTypedFetch } from '@express-typed-api/client';
-import { WeatherApiEndpoints } from './readme-shared';
+import { WeatherApi } from './readme-shared';
 
-const typedFetch = getTypedFetch<WeatherApiEndpoints>();
+const typedFetch = getTypedFetch<WeatherApi>();
 
 export const fetchWeather = async (cityName: string) => {
   const response = await typedFetch({

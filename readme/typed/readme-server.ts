@@ -1,6 +1,6 @@
 import { publishApi } from '@express-typed-api/server';
 import express from 'express';
-import { GetWeatherEndpoint, WeatherApiEndpoints } from './readme-shared';
+import { GetWeatherEndpoint, WeatherApi } from './readme-shared';
 
 const getWeatherEndpoint: GetWeatherEndpoint = (req) => {
   if (req.params.cityName.length < 3) {
@@ -17,7 +17,7 @@ const getWeatherEndpoint: GetWeatherEndpoint = (req) => {
   };
 };
 
-const weatherApi: WeatherApiEndpoints = {
+const weatherApi: WeatherApi = {
   '/api/weather/:cityName': {
     get: getWeatherEndpoint,
   },

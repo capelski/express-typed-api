@@ -52,7 +52,7 @@ export type GetWeatherByURLParam = EndpointHandler<
   { params: WeatherEndpointInput }
 >;
 
-export type WeatherApiEndpoints = {
+export type WeatherApi = {
   '/api/weather': {
     get: GetWeatherByQueryString;
     post: GetWeatherByJsonBody;

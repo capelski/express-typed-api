@@ -10,7 +10,7 @@ export type GetWeatherEndpoint = EndpointHandler<
   { params: { cityName: string } }
 >;
 
-export type WeatherApiEndpoints = {
+export type WeatherApi = {
   '/api/weather/:cityName': {
     get: GetWeatherEndpoint;
   };

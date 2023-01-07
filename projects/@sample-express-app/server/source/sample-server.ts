@@ -5,7 +5,7 @@ import {
   GetWeatherByURLParam,
   validateCityName,
   Weather,
-  WeatherApiEndpoints,
+  WeatherApi,
   WeatherIcons,
 } from '@sample-express-app/common';
 import express from 'express';
@@ -54,7 +54,7 @@ const weatherByUrlParam: GetWeatherByURLParam = (req) => {
   return weatherLogic(req.params.cityName);
 };
 
-const weatherApi: WeatherApiEndpoints = {
+const weatherApi: WeatherApi = {
   '/api/weather': {
     get: weatherByQueryString,
     post: weatherByJsonBody,

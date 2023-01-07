@@ -1,11 +1,7 @@
 import { getTypedFetch, TypedResponse } from '@express-typed-api/client';
-import {
-  validateCityName,
-  WeatherApiEndpoints,
-  WeatherEndpointResponse,
-} from '@sample-express-app/common';
+import { validateCityName, WeatherApi, WeatherEndpointResponse } from '@sample-express-app/common';
 
-const typedFetch = getTypedFetch<WeatherApiEndpoints>();
+const typedFetch = getTypedFetch<WeatherApi>();
 
 const cityNameInput = <HTMLInputElement>document.getElementById('city-name')!;
 const getWeatherByBodyButton = document.getElementById('get-weather-by-body')!;
