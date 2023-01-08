@@ -42,6 +42,10 @@ When('calling publishApi', () => {
   publishedEndpoints = publishApi(app, apiDefinition);
 });
 
+When(/calling publishApi with "(.*)" prefix/, (prefix: string) => {
+  publishedEndpoints = publishApi(app, apiDefinition, { prefix });
+});
+
 Then(
   /the express app "(.*)" method is called with "(.*)" and handlers? "(.*)"/,
   (method: EndpointMethod, path: string, handlersName: string) => {

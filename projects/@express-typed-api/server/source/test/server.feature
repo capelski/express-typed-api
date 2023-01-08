@@ -33,3 +33,16 @@ Feature: Publish api
       Then the express app "post" method is called with "/api/sample" and handlers "jsonParser,A"
       And the following published endpoints list is returned
          | /api/sample | post    | jsonParser,A  |
+
+   Scenario: Endpoints handlers with prefixed path
+      Given a new express app
+      And the API definition in "simple-endpoint-handlers"
+      When calling publishApi with "/v1" prefix
+      Then the express app "get" method is called with "/v1/api/sample" and handler "A"
+      And the following published endpoints list is returned
+         | /v1/api/sample | get    | A   |
+         | /v1/api/sample | post   | B   |
+         | /v1/api/sample | put    | C   |
+         | /v1/api/sample | delete | D   |
+         | /v1/api/sample | patch  | E   |
+

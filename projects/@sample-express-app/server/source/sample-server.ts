@@ -6,6 +6,7 @@ import {
   validateCityName,
   Weather,
   WeatherApi,
+  WeatherApiWithPrefix,
   WeatherIcons,
 } from '@sample-express-app/common';
 import express from 'express';
@@ -54,6 +55,8 @@ const weatherByUrlParam: GetWeatherByURLParam = (req) => {
   return weatherLogic(req.params.cityName);
 };
 
+const app = express();
+
 const weatherApi: WeatherApi = {
   '/api/weather': {
     get: weatherByQueryString,
@@ -64,9 +67,19 @@ const weatherApi: WeatherApi = {
   },
 };
 
-const app = express();
-
 publishApi(app, weatherApi);
+
+const weatherApiWithPrefix: WeatherApiWithPrefix = {
+  '/weather': {
+    get: weatherByQueryString,
+    post: weatherByJsonBody,
+  },
+  '/weather/:cityName': {
+    get: weatherByUrlParam,
+  },
+};
+
+publishApi(app, weatherApiWithPrefix, { prefix: '/api/v1' });
 
 const port = process.env.PORT || 3000;
 

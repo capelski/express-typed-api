@@ -62,6 +62,16 @@ export type WeatherApi = {
   };
 };
 
+export type WeatherApiWithPrefix = {
+  '/weather': {
+    get: GetWeatherByQueryString;
+    post: GetWeatherByJsonBody;
+  };
+  '/weather/:cityName': {
+    get: GetWeatherByURLParam;
+  };
+};
+
 const minimumCharacters = 3;
 
 export const validateCityName = (cityName: string | undefined): Validation => {

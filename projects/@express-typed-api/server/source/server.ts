@@ -6,6 +6,10 @@ import {
 } from '@express-typed-api/common';
 import express from 'express';
 
+export type PublishApiOptions = {
+  prefix?: string;
+};
+
 export type PublishedEndpoint = {
   method: EndpointMethod;
   handlers: express.RequestHandler[];
@@ -16,7 +20,8 @@ const allMethods: string[] = Object.values(EndpointMethod);
 
 export const publishApi = <TApi extends ApiEndpoints>(
   app: express.Express | express.Router,
-  apiEndpoints: TApi
+  apiEndpoints: TApi,
+  options: PublishApiOptions = {}
 ): PublishedEndpoint[] => {
   return Object.keys(apiEndpoints).reduce<PublishedEndpoint[]>((apiReduced, path) => {
     const pathMethods = apiEndpoints[path];
@@ -25,13 +30,14 @@ export const publishApi = <TApi extends ApiEndpoints>(
       .map((method) => method as EndpointMethod)
       .reduce<PublishedEndpoint[]>((pathReduced, method) => {
         const handlers = wrapHandler(pathMethods[method]!);
+        const prefixedPath = options.prefix ? options.prefix + path : path;
+
         const publishedEndpoint: PublishedEndpoint = {
           handlers,
           method,
-          path,
+          path: prefixedPath,
         };
-
-        (<express.Express>app)[method](path, ...handlers);
+        (<express.Express>app)[method](prefixedPath, ...handlers);
 
         return pathReduced.concat([publishedEndpoint]);
       }, []);
