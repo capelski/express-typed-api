@@ -1,61 +1,11 @@
-import { EndpointResponse, publishApi } from '@express-typed-api/server';
-import {
-  GetWeatherByJsonBody,
-  GetWeatherByQueryString,
-  GetWeatherByURLParam,
-  validateCityName,
-  Weather,
-  WeatherApi,
-  WeatherApiWithPrefix,
-  WeatherIcons,
-} from '@sample-express-app/common';
+import { publishApi } from '@express-typed-api/server';
+import { WeatherApi, WeatherApiWithPrefix } from '@sample-express-app/common';
 import express from 'express';
-
-const randomFloat = (min: number, max: number, decimals = 2) => {
-  const randomNumber = Math.random() * (max - min + 1) + min;
-  const roundFactor = Math.pow(10, decimals);
-  return Math.round(randomNumber * roundFactor) / roundFactor;
-};
-
-const randomWeatherIcon = () => {
-  const icons = Object.values(WeatherIcons) as WeatherIcons[];
-  return icons[Math.floor(Math.random() * icons.length)];
-};
-
-const getRandomWeather = (): Weather => ({
-  icon: randomWeatherIcon(),
-  maxTemperature: randomFloat(20, 40),
-  minTemperature: randomFloat(0, 20),
-  temperature: randomFloat(10, 30),
-  windSpeed: randomFloat(0, 10),
-});
-
-const weatherLogic = (cityName: string | undefined) => {
-  const cityNameValidation = validateCityName(cityName);
-
-  if (!cityNameValidation.valid) {
-    return new EndpointResponse({ errorMessage: cityNameValidation.message }, 400);
-  }
-  return new EndpointResponse(getRandomWeather());
-};
-
-const weatherByJsonBody: GetWeatherByJsonBody = {
-  handler: (req) => {
-    return weatherLogic(req.body?.cityName);
-  },
-  middleware: (h) => [express.json(), h],
-};
-
-const weatherByQueryString: GetWeatherByQueryString = (req) => {
-  const cityName = <string | undefined>req.query.cityName;
-  return weatherLogic(cityName);
-};
-
-const weatherByUrlParam: GetWeatherByURLParam = (req) => {
-  return weatherLogic(req.params.cityName);
-};
+import { weatherByQueryString, weatherByJsonBody, weatherByUrlParam } from './sample-endpoints';
 
 const app = express();
+
+/* 1. Endpoints' full path example */
 
 const weatherApi: WeatherApi = {
   '/api/weather': {
@@ -69,6 +19,8 @@ const weatherApi: WeatherApi = {
 
 publishApi(app, weatherApi);
 
+/* 2. Endpoints' partial path example, using a server prefix */
+
 const weatherApiWithPrefix: WeatherApiWithPrefix = {
   '/weather': {
     get: weatherByQueryString,
@@ -79,10 +31,18 @@ const weatherApiWithPrefix: WeatherApiWithPrefix = {
   },
 };
 
-publishApi(app, weatherApiWithPrefix, { prefix: '/api/v1' });
+publishApi(app, weatherApiWithPrefix, { prefix: '/v1' });
 
-const port = process.env.PORT || 3000;
+/* 3. Endpoints' partial path example, using an express router */
 
-app.listen(port, () => {
+const router = express.Router();
+
+publishApi(router, weatherApiWithPrefix);
+
+app.use('/v2', router);
+
+/* Server launch */
+
+app.listen(process.env.PORT || 3000, () => {
   console.log('Server up and running!');
 });
