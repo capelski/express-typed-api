@@ -52,3 +52,10 @@ Feature: Get typed fetch
       When calling typedFetch with the described parameters
       Then window.fetch is called
       And gets '{"city":"Madrid"}' as the body property of the second parameter
+
+   Scenario: Fetch request with prefix
+      Given an instance of typedFetch with "/api/v1" prefix
+      And a url "/sample/url"
+      When calling typedFetch with the described parameters
+      Then window.fetch is called
+      And gets url "/api/v1/sample/url" as first parameter

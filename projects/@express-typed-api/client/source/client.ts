@@ -17,8 +17,8 @@ export type Dictionary<TValue, TKey extends string | symbol | number = string> =
   [K in TKey]: TValue;
 };
 
-export type TypedResponse<T> = Omit<Response, 'json'> & {
-  json: () => Promise<T>;
+export type TypedFetchOptions = {
+  prefix?: string;
 };
 
 export type TypedRequestInit<TMethod> = Omit<RequestInit, 'method'> & {
@@ -30,6 +30,10 @@ export type TypedRequestInitJsonBody<TMethod> = Omit<TypedRequestInit<TMethod>, 
     'Content-Type': 'application/json';
     [key: string]: string;
   };
+};
+
+export type TypedResponse<T> = Omit<Response, 'json'> & {
+  json: () => Promise<T>;
 };
 
 export type EHClientArguments<
@@ -103,15 +107,18 @@ type EHClientArgumentsInternal<
       query?: Dictionary<string>;
     });
 
-export const getTypedFetch = <TApi extends ApiEndpoints>() => {
+export const getTypedFetch = <TApi extends ApiEndpoints>(options: TypedFetchOptions = {}) => {
   if (typeof fetch === 'undefined') {
     throw new Error('fetch is not available in this context. Are you running it on a browser?');
   }
-  return getTypedFetchCore<TApi>(fetch);
+  return getTypedFetchCore<TApi>(fetch, options);
 };
 
 // Internal function for testing purposes
-export const getTypedFetchCore = <TApi extends ApiEndpoints>(fetchDependency: Window['fetch']) => {
+export const getTypedFetchCore = <TApi extends ApiEndpoints>(
+  fetchDependency: Window['fetch'],
+  options: TypedFetchOptions = {}
+) => {
   return function typedFetch<TPath extends keyof TApi, TMethod extends keyof TApi[TPath]>(
     args: EHClientArguments<TApi, TPath, TMethod>
   ) {
@@ -120,12 +127,14 @@ export const getTypedFetchCore = <TApi extends ApiEndpoints>(fetchDependency: Wi
     const params = 'params' in args ? args.params : undefined;
     const query = 'query' in args ? args.query : undefined;
 
+    const prefixedUrl = options.prefix ? options.prefix + <string>path : <string>path;
+
     const paramUrl = params
       ? Object.keys(params).reduce((reduced, paramName) => {
           const paramValue = params[paramName];
           return reduced.replace(`:${paramName}`, paramValue);
-        }, <string>path)
-      : <string>path;
+        }, prefixedUrl)
+      : prefixedUrl;
 
     const queryUrl =
       query && Object.keys(query).length > 0
