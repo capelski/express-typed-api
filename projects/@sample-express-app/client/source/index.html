@@ -12,23 +12,50 @@
     <div>
       <div>
         <p>
-          <span>City: </span>
-          <input id="city-name" type="text" />
+          <span>Request payload: </span>
+          <input name="request-payload" type="radio" value="jsonBody" />
+          <span>JSON body</span>
+          <input name="request-payload" type="radio" value="params" />
+          <span>URL parameter</span>
+          <input name="request-payload" type="radio" value="query" checked="true" />
+          <span>Query string</span>
         </p>
-        <button id="get-weather-by-body" type="button">Get weather (by JSON body)</button>
-        <button id="get-weather-by-query-string" type="button">Get weather (by QueryString)</button>
-        <button id="get-weather-by-url-param" type="button">Get weather (by URL parameter)</button>
 
+        <p>
+          <span>Target endpoint: </span>
+          <input name="target-endpoint" type="radio" value="fullPath" checked="true" />
+          <span>Full path</span>
+          <input name="target-endpoint" type="radio" value="/api/v1" />
+          <span>"/api/v1" prefix</span>
+          <input name="target-endpoint" type="radio" value="/api/v2" />
+          <span>"/api/v2" prefix</span>
+        </p>
+
+        <br />
+
+        <p>
+          <span>City: </span>
+          <input id="city-name" type="text" value="Brussels" />
+          <button id="get-weather" type="button">Get weather!</button>
+        </p>
         <p id="error-message" style="color: red"></p>
 
+        <br />
+
+        <p><b>Request url</b>: <span id="request-url">-</span></p>
+        <p><b>Request body</b>: <span id="request-body">-</span></p>
+
+        <br />
+
         <div>
-          <h2 id="city-header">-</h2>
-          <h3 style="display: flex; align-items: center">
-            <img id="icon" style="height: 100px; margin-right: 16px; width: 100px" />
-            <span id="temperature">-</span> ºC
-          </h3>
-          <p>Min temperature: <span id="min-temperature">-</span> ºC</p>
-          <p>Max temperature: <span id="max-temperature">-</span> ºC</p>
+          <p><b>Response</b></p>
+          <p>
+            <img id="icon" style="height: 100px; width: 100px" />
+          </p>
+          <p>
+            Temperature: <span id="temperature">-</span> ºC (min:
+            <span id="min-temperature">-</span>ºC / max: <span id="max-temperature">-</span>ºC)
+          </p>
           <p>Wind speed: <span id="wind-speed">-</span> km/h</p>
         </div>
       </div>
