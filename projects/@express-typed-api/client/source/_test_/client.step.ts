@@ -3,7 +3,7 @@ import { EndpointHandler, EndpointMethod } from '@express-typed-api/common';
 import { expect } from 'chai';
 import express from 'express';
 import sinon, { SinonSpy } from 'sinon';
-import { getTypedFetchCore, TypedRequestInitJsonBody } from './client';
+import { getTypedFetchCore, TypedRequestInitJsonBody } from '../client';
 
 type TestApi = {
   [path: string]: {
