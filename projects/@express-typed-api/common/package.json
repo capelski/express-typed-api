@@ -11,6 +11,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/capelski/express-typed-api.git"
+  },
   "scripts": {
     "build": "npm run clean && tsc -p ./tsconfig.common.json",
     "clean": "rm -rf distribution",
