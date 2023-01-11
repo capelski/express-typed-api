@@ -13,7 +13,7 @@ import {
   QueryOnly,
 } from '@express-typed-api/common';
 
-export type Dictionary<TValue, TKey extends string | symbol | number = string> = {
+type Dictionary<TValue, TKey extends string | symbol | number = string> = {
   [K in TKey]: TValue;
 };
 
@@ -36,7 +36,7 @@ export type TypedResponse<T> = Omit<Response, 'json'> & {
   json: () => Promise<T>;
 };
 
-export type EHClientArguments<
+type EHClientArguments<
   TApi extends ApiEndpoints,
   TPath extends keyof TApi,
   TMethod extends keyof TApi[TPath]
