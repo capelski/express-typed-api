@@ -36,76 +36,102 @@ export type TypedResponse<T> = Omit<Response, 'json'> & {
   json: () => Promise<T>;
 };
 
-type TypedFetchParametersWrapper<
-  TApi extends ApiEndpoints,
-  TPath extends keyof TApi,
-  TMethod extends keyof TApi[TPath]
-> = TApi[TPath][TMethod] extends EndpointHandler<infer _TResponse, infer TDefinition>
-  ? TypedFetchParameters<TApi, TPath, TMethod, TDefinition>
-  : TApi[TPath][TMethod] extends EndpointHandlerWithMiddleware<infer _TResponse, infer TDefinition>
-  ? TypedFetchParameters<TApi, TPath, TMethod, TDefinition>
-  : TypedFetchParameters<TApi, TPath, TMethod>;
-
-type TypedFetchParameters<
+type TypedFetchArguments<
   TApi extends ApiEndpoints,
   TPath extends keyof TApi,
   TMethod extends keyof TApi[TPath],
   TDefinition extends EHRequestDefinition = {}
-> = { path: TPath } & (TDefinition extends JsonBody_Params_Query<
-  infer TBody,
-  infer TParams,
-  infer TQuery
->
-  ? {
-      init: TypedRequestInitJsonBody<TMethod>;
-      jsonBody: TBody;
-      params: TParams;
-      query: TQuery;
-    }
+> = TDefinition extends JsonBody_Params_Query<infer TBody, infer TParams, infer TQuery>
+  ? TypedFetchArgumentsNamed<
+      TPath,
+      TypedRequestInitJsonBody<TMethod>,
+      {
+        jsonBody: TBody;
+        params: TParams;
+        query: TQuery;
+      }
+    >
   : TDefinition extends JsonBody_Params<infer TBody, infer TParams>
-  ? {
-      init: TypedRequestInitJsonBody<TMethod>;
-      jsonBody: TBody;
-      params: TParams;
-      query?: Dictionary<string>;
-    }
+  ? TypedFetchArgumentsNamed<
+      TPath,
+      TypedRequestInitJsonBody<TMethod>,
+      {
+        jsonBody: TBody;
+        params: TParams;
+        query?: Dictionary<string>;
+      }
+    >
   : TDefinition extends JsonBody_Query<infer TBody, infer TQuery>
-  ? {
-      init: TypedRequestInitJsonBody<TMethod>;
-      jsonBody: TBody;
-      params?: Dictionary<string>;
-      query: TQuery;
-    }
+  ? TypedFetchArgumentsNamed<
+      TPath,
+      TypedRequestInitJsonBody<TMethod>,
+      {
+        jsonBody: TBody;
+        params?: Dictionary<string>;
+        query?: Dictionary<string>;
+      }
+    >
   : TDefinition extends Params_Query<infer TParams, infer TQuery>
-  ? {
-      init: TypedRequestInit<TMethod>;
-      params: TParams;
-      query: TQuery;
-    }
+  ? TypedFetchArgumentsNamed<
+      TPath,
+      TypedRequestInit<TMethod>,
+      {
+        params: TParams;
+        query: TQuery;
+      }
+    >
   : TDefinition extends JsonBodyOnly<infer TBody>
-  ? {
-      init: TypedRequestInitJsonBody<TMethod>;
-      jsonBody: TBody;
-      params?: Dictionary<string>;
-      query?: Dictionary<string>;
-    }
+  ? TypedFetchArgumentsNamed<
+      TPath,
+      TypedRequestInitJsonBody<TMethod>,
+      {
+        jsonBody: TBody;
+        params?: Dictionary<string>;
+        query?: Dictionary<string>;
+      }
+    >
   : TDefinition extends ParamsOnly<infer TParams>
-  ? {
-      init: TypedRequestInit<TMethod>;
-      params: TParams;
-      query?: Dictionary<string>;
-    }
+  ? TypedFetchArgumentsNamed<
+      TPath,
+      TypedRequestInit<TMethod>,
+      {
+        params: TParams;
+        query?: Dictionary<string>;
+      }
+    >
   : TDefinition extends QueryOnly<infer TQuery>
-  ? {
-      init: TypedRequestInit<TMethod>;
-      params?: Dictionary<string>;
-      query: TQuery;
-    }
-  : {
-      init: TypedRequestInit<TMethod>;
-      params?: Dictionary<string>;
-      query?: Dictionary<string>;
-    });
+  ? TypedFetchArgumentsNamed<
+      TPath,
+      TypedRequestInit<TMethod>,
+      {
+        params?: Dictionary<string>;
+        query: TQuery;
+      }
+    >
+  : [
+      path: TPath,
+      init: TypedRequestInit<TMethod>,
+      payload?: {
+        params?: Dictionary<string>;
+        query?: Dictionary<string>;
+      }
+    ];
+
+type TypedFetchArgumentsNamed<TPath, TInit, TOptions> = [
+  path: TPath,
+  init: TInit,
+  payload: TOptions
+];
+
+type TypedFetchArgumentsWrapper<
+  TApi extends ApiEndpoints,
+  TPath extends keyof TApi,
+  TMethod extends keyof TApi[TPath]
+> = TApi[TPath][TMethod] extends EndpointHandler<infer _TResponse, infer TDefinition>
+  ? TypedFetchArguments<TApi, TPath, TMethod, TDefinition>
+  : TApi[TPath][TMethod] extends EndpointHandlerWithMiddleware<infer _TResponse, infer TDefinition>
+  ? TypedFetchArguments<TApi, TPath, TMethod, TDefinition>
+  : TypedFetchArguments<TApi, TPath, TMethod>;
 
 export const getTypedFetch = <TApi extends ApiEndpoints>(options: GetTypedFetchOptions = {}) => {
   if (typeof fetch === 'undefined') {
@@ -120,12 +146,12 @@ export const getTypedFetchCore = <TApi extends ApiEndpoints>(
   options: GetTypedFetchOptions = {}
 ) => {
   return function typedFetch<TPath extends keyof TApi, TMethod extends keyof TApi[TPath]>(
-    args: TypedFetchParametersWrapper<TApi, TPath, TMethod>
+    ...args: TypedFetchArgumentsWrapper<TApi, TPath, TMethod>
   ) {
-    const { init, path } = args;
-    const jsonBody = 'jsonBody' in args ? args.jsonBody : undefined;
-    const params = 'params' in args ? args.params : undefined;
-    const query = 'query' in args ? args.query : undefined;
+    const [path, init, payload] = args;
+    const jsonBody = payload && 'jsonBody' in payload ? payload.jsonBody : undefined;
+    const params = payload && 'params' in payload ? payload.params : undefined;
+    const query = payload && 'query' in payload ? payload.query : undefined;
 
     const prefixedUrl = options.prefix ? options.prefix + <string>path : <string>path;
 

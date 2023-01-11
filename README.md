@@ -131,11 +131,13 @@ These are the required steps to setup `@express-typed-api` and automatically inf
    const typedFetch = getTypedFetch<WeatherApi>();
 
    export const fetchWeather = async (cityName: string) => {
-     const response = await typedFetch({
-       path: '/api/weather/:cityName',
-       init: { method: 'get' },
-       params: { cityName },
-     });
+     const response = await typedFetch(
+       '/api/weather/:cityName',
+       { method: 'get' },
+       {
+         params: { cityName },
+       }
+     );
      const payload = await response.json();
      if ('errorMessage' in payload) {
        console.error(payload);

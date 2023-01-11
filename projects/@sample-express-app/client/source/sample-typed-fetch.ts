@@ -5,32 +5,36 @@ export const fullPathHandlers = () => {
   const typedFetch = getTypedFetch<WeatherApi>();
 
   const getWeatherJsonBody = (cityName: string) =>
-    typedFetch({
-      path: '/api/weather',
-      init: {
+    typedFetch(
+      '/api/weather',
+      {
         headers: { 'Content-Type': 'application/json' },
         method: 'post',
       },
-      jsonBody: { cityName },
-    });
+      { jsonBody: { cityName } }
+    );
 
   const getWeatherQuery = (cityName: string) =>
-    typedFetch({
-      path: '/api/weather',
-      init: { method: 'get' },
-      query: {
-        cityName,
-      },
-    });
+    typedFetch(
+      '/api/weather',
+      { method: 'get' },
+      {
+        query: {
+          cityName,
+        },
+      }
+    );
 
   const getWeatherParams = (cityName: string) =>
-    typedFetch({
-      path: '/api/weather/:cityName',
-      init: { method: 'get' },
-      params: {
-        cityName,
-      },
-    });
+    typedFetch(
+      '/api/weather/:cityName',
+      { method: 'get' },
+      {
+        params: {
+          cityName,
+        },
+      }
+    );
 
   return {
     jsonBody: getWeatherJsonBody,

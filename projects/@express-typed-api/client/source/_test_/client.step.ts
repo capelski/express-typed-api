@@ -67,9 +67,7 @@ Given(
 );
 
 When('calling typedFetch with the described parameters', () => {
-  typedFetch({
-    path: requestUrl,
-    init: requestInit,
+  typedFetch(requestUrl, requestInit, {
     jsonBody,
     params,
     query,
