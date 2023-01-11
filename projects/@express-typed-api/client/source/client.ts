@@ -36,17 +36,17 @@ export type TypedResponse<T> = Omit<Response, 'json'> & {
   json: () => Promise<T>;
 };
 
-type EHClientArguments<
+type TypedFetchParametersWrapper<
   TApi extends ApiEndpoints,
   TPath extends keyof TApi,
   TMethod extends keyof TApi[TPath]
 > = TApi[TPath][TMethod] extends EndpointHandler<infer _TResponse, infer TDefinition>
-  ? EHClientArgumentsInternal<TApi, TPath, TMethod, TDefinition>
+  ? TypedFetchParameters<TApi, TPath, TMethod, TDefinition>
   : TApi[TPath][TMethod] extends EndpointHandlerWithMiddleware<infer _TResponse, infer TDefinition>
-  ? EHClientArgumentsInternal<TApi, TPath, TMethod, TDefinition>
-  : EHClientArgumentsInternal<TApi, TPath, TMethod>;
+  ? TypedFetchParameters<TApi, TPath, TMethod, TDefinition>
+  : TypedFetchParameters<TApi, TPath, TMethod>;
 
-type EHClientArgumentsInternal<
+type TypedFetchParameters<
   TApi extends ApiEndpoints,
   TPath extends keyof TApi,
   TMethod extends keyof TApi[TPath],
@@ -120,7 +120,7 @@ export const getTypedFetchCore = <TApi extends ApiEndpoints>(
   options: TypedFetchOptions = {}
 ) => {
   return function typedFetch<TPath extends keyof TApi, TMethod extends keyof TApi[TPath]>(
-    args: EHClientArguments<TApi, TPath, TMethod>
+    args: TypedFetchParametersWrapper<TApi, TPath, TMethod>
   ) {
     const { init, path } = args;
     const jsonBody = 'jsonBody' in args ? args.jsonBody : undefined;
