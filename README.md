@@ -7,6 +7,7 @@ Simple client/server libraries to assist with creating a type declaration for an
 - [Usage example](#usage-example)
 - [Server API](#server-api)
 - [Client API](#client)
+- [Typed request payload](#typed-request-payload)
 
 ## Usage example
 
@@ -28,7 +29,7 @@ app.get('/api/weather/:cityName', (req) => {
 
   return {
     payload: {
-      temperature: Math.floor(Math.random(50) * 10000) / 100,
+      temperature: Math.floor(Math.random() * 5000) / 100,
       /* other weather properties */
     },
   };
@@ -106,7 +107,7 @@ These are the required steps to setup `@express-typed-api` and automatically inf
 
      return {
        payload: {
-         temperature: Math.floor(Math.random(50) * 10000) / 100,
+         temperature: Math.floor(Math.random() * 5000) / 100,
          /* other weather properties */
        },
      };
@@ -156,6 +157,8 @@ These are the required steps to setup `@express-typed-api` and automatically inf
    ```
 
 ![](/readme/fetch-inferred-return-type.png)
+
+For more examples see the [sample repository](https://github.com/capelski/express-typed-api/tree/main/projects/%40sample-express-app).
 
 ## Server API
 
@@ -232,11 +235,11 @@ The Promise that results from calling `fetch` with the corresponding path and in
 - **init**: An object containing custom settings that will be applied to the `fetch` request (i.e. `headers`). Note that the `method` property is mandatory, as it is necessary to resolve the target endpoint's return type.
 - **payload**: An optional object containing data that will be sent with the `fetch` request.
 
-  | name     | type                       | default     | description                                                                                                                                                                                                                                  |
-  | -------- | -------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | jsonBody | any?                       | `undefined` | Only available when using typed Request jsonBody. Non serialized request's body that will be stringified (i.e. `JSON.stringify`) before sending it to the server. Requires including the `Content-Type` header with `application/json` value |
-  | params   | { [key: string]: string }? | `undefined` | Key-value dictionary that can be used to replace express URL parameters in the request's URL (see `paramsResponse` example)                                                                                                                  |
-  | query    | { [key: string]: string }? | `undefined` | Key-value dictionary that can be used to prepend query string parameters to the URL (see `queryResponse` example)                                                                                                                            |
+  | name     | type                       | default     | description                                                                                                                                                                                                                                                                  |
+  | -------- | -------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | jsonBody | any?                       | `undefined` | Only available when using [typed request payload](#typed-request-payload) with `jsonBody`. Non serialized request's body that will be stringified (i.e. `JSON.stringify`) and sent to the server. Requires including the `Content-Type` header with `application/json` value |
+  | params   | { [key: string]: string }? | `undefined` | Key-value dictionary that can be used to replace express URL parameters in the request's URL (see `paramsResponse` example). Mandatory when using [typed request payload](#typed-request-payload) with `query`                                                               |
+  | query    | { [key: string]: string }? | `undefined` | Key-value dictionary that can be used to prepend query string parameters to the URL (see `queryResponse` example). Mandatory when using [typed request payload](#typed-request-payload) with `params`                                                                        |
 
 #### Example
 
@@ -253,3 +256,40 @@ const paramsResponse = await typedFetch(
 const queryResponse = await typedFetch('/my/path', { method: 'get' }, { query: { name: 'Jena' } });
 // Will generate a request URL of "/my/path?name=Jena"
 ```
+
+## Typed request payload
+
+`@express-typed-api` allows specifying the type of the requests' payload (i.e. `query`, `params` and `body`) by providing an optional second type parameter to `EndpointHandler`, containing any combination of `jsonBody`, `params` and/or `query` types.
+
+```typescript
+import { EndpointHandler } from '@express-typed-api/common';
+
+export type GetWeatherEndpoint = EndpointHandler<
+  | {
+      temperature: number;
+      /* other weather properties */
+    }
+  | {
+      errorMessage: string;
+    },
+  {
+    params: { cityName: string };
+  }
+>;
+
+export type WeatherApi = {
+  '/api/weather/:cityName': {
+    get: GetWeatherEndpoint;
+  };
+};
+```
+
+The types will then be enforced on both client requests and server endpoint handlers:
+
+- **Client**
+
+  ![](/readme/typed-request-payload-client.png)
+
+- **Server**
+
+  ![](/readme/typed-request-payload-server.png)
