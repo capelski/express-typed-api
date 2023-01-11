@@ -25,5 +25,5 @@
     "test": "cucumber-js --require-module ts-node/register --require source/**/*.step.ts source/**/*.feature"
   },
   "types": "distribution/index.d.ts",
-  "version": "1.0.5"
+  "version": "1.0.6"
 }
