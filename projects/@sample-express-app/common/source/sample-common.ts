@@ -67,7 +67,7 @@ export type WeatherApi = {
 
 /**
  * Sample API's type declaration containing the endpoints' partial path,
- * which will be exposed with a prefix in the beginning
+ * which will be published with a prefix
  */
 export type WeatherApiWithPrefix = {
   '/weather': {

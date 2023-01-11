@@ -18,7 +18,7 @@ type Dictionary<TValue, TKey extends string | symbol | number = string> = {
 };
 
 export type GetTypedFetchOptions = {
-  prefix?: string;
+  baseUrl?: string;
 };
 
 export type TypedRequestInit<TMethod> = Omit<RequestInit, 'method'> & {
@@ -153,7 +153,7 @@ export const getTypedFetchCore = <TApi extends ApiEndpoints>(
     const params = payload && 'params' in payload ? payload.params : undefined;
     const query = payload && 'query' in payload ? payload.query : undefined;
 
-    const prefixedUrl = options.prefix ? options.prefix + <string>path : <string>path;
+    const prefixedUrl = options.baseUrl ? options.baseUrl + <string>path : <string>path;
 
     const paramUrl = params
       ? Object.keys(params).reduce((reduced, paramName) => {

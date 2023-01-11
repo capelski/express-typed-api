@@ -37,7 +37,7 @@ Feature: Publish api
    Scenario: Endpoints handlers with prefixed path
       Given a new express app
       And the API definition in "simple-endpoint-handlers"
-      When calling publishApi with "/v1" prefix
+      When calling publishApi with "/v1" pathsPrefix
       Then the express app "get" method is called with "/v1/api/sample" and handler "A"
       And the following published endpoints list is returned
          | /v1/api/sample | get    | A   |

@@ -1,8 +1,8 @@
 import { getTypedFetch } from '@express-typed-api/client';
 import { WeatherApiWithPrefix } from '@sample-express-app/common';
 
-export const prefixedPathHandlers = (prefix: string) => {
-  const typedFetch = getTypedFetch<WeatherApiWithPrefix>({ prefix });
+export const baseUrlHandlers = (baseUrl: string) => {
+  const typedFetch = getTypedFetch<WeatherApiWithPrefix>({ baseUrl });
 
   const getWeatherJsonBody = (cityName: string) =>
     typedFetch(

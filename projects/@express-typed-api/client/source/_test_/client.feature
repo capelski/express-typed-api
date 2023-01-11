@@ -53,8 +53,8 @@ Feature: Get typed fetch
       Then window.fetch is called
       And gets '{"city":"Madrid"}' as the body property of the second parameter
 
-   Scenario: Fetch request with prefix
-      Given an instance of typedFetch with "/api/v1" prefix
+   Scenario: Fetch request with baseUrl
+      Given an instance of typedFetch with "/api/v1" baseUrl
       And a url "/sample/url"
       When calling typedFetch with the described parameters
       Then window.fetch is called

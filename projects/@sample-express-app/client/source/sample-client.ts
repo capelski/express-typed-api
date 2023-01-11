@@ -13,7 +13,7 @@ import {
   requestBody,
 } from './sample-elements';
 import { fullPathHandlers } from './sample-typed-fetch';
-import { prefixedPathHandlers } from './sample-typed-fetch-with-prefix';
+import { baseUrlHandlers } from './sample-typed-fetch-base-url';
 
 let latestRequest: {
   url: string;
@@ -34,9 +34,9 @@ const fetchHandlers: {
     [key: string]: (cityName: string) => Promise<TypedResponse<WeatherEndpointResponse>>;
   };
 } = {
-  fullPath: fullPathHandlers(),
-  '/api/v1': prefixedPathHandlers('/api/v1'),
-  '/api/v2': prefixedPathHandlers('/api/v2'),
+  none: fullPathHandlers(),
+  '/api/v1': baseUrlHandlers('/api/v1'),
+  '/api/v2': baseUrlHandlers('/api/v2'),
 };
 
 getWeatherButton.addEventListener('click', async () => {
@@ -52,11 +52,9 @@ getWeatherButton.addEventListener('click', async () => {
   const requestPayload = document.querySelector<HTMLInputElement>(
     'input[name=request-payload]:checked'
   )!;
-  const targetEndpoint = document.querySelector<HTMLInputElement>(
-    'input[name=target-endpoint]:checked'
-  )!;
+  const baseUrl = document.querySelector<HTMLInputElement>('input[name=base-url]:checked')!;
 
-  const response = await fetchHandlers[targetEndpoint.value][requestPayload.value](cityName);
+  const response = await fetchHandlers[baseUrl.value][requestPayload.value](cityName);
 
   try {
     const payload = await response.json();

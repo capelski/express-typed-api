@@ -7,7 +7,7 @@ import {
 import express from 'express';
 
 export type PublishApiOptions = {
-  prefix?: string;
+  pathsPrefix?: string;
 };
 
 export type PublishedEndpoint = {
@@ -30,7 +30,7 @@ export const publishApi = <TApi extends ApiEndpoints>(
       .map((method) => method as EndpointMethod)
       .reduce<PublishedEndpoint[]>((pathReduced, method) => {
         const handlers = wrapHandler(pathMethods[method]!);
-        const prefixedPath = options.prefix ? options.prefix + path : path;
+        const prefixedPath = options.pathsPrefix ? options.pathsPrefix + path : path;
 
         const publishedEndpoint: PublishedEndpoint = {
           handlers,

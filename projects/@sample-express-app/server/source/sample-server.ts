@@ -31,7 +31,7 @@ const weatherApiWithPrefix: WeatherApiWithPrefix = {
   },
 };
 
-publishApi(app, weatherApiWithPrefix, { prefix: '/api/v1' });
+publishApi(app, weatherApiWithPrefix, { pathsPrefix: '/api/v1' });
 
 /* 3. Endpoints' partial path example, using an express router */
 

@@ -42,8 +42,8 @@ When('calling publishApi', () => {
   publishedEndpoints = publishApi(app, apiDefinition);
 });
 
-When(/calling publishApi with "(.*)" prefix/, (prefix: string) => {
-  publishedEndpoints = publishApi(app, apiDefinition, { prefix });
+When(/calling publishApi with "(.*)" pathsPrefix/, (pathsPrefix: string) => {
+  publishedEndpoints = publishApi(app, apiDefinition, { pathsPrefix });
 });
 
 Then(

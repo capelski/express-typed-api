@@ -38,8 +38,8 @@ Given('an instance of typedFetch', () => {
   (fetchSpy = sinon.spy()), (typedFetch = getTypedFetchCore<TestApi>(fetchSpy));
 });
 
-Given(/an instance of typedFetch with "(.*)" prefix/, (prefix: string) => {
-  (fetchSpy = sinon.spy()), (typedFetch = getTypedFetchCore<TestApi>(fetchSpy, { prefix }));
+Given(/an instance of typedFetch with "(.*)" baseUrl/, (baseUrl: string) => {
+  (fetchSpy = sinon.spy()), (typedFetch = getTypedFetchCore<TestApi>(fetchSpy, { baseUrl }));
 });
 
 Given(/a url "(.*)"/, (url: string) => {
