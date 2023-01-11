@@ -17,7 +17,7 @@ type Dictionary<TValue, TKey extends string | symbol | number = string> = {
   [K in TKey]: TValue;
 };
 
-export type TypedFetchOptions = {
+export type GetTypedFetchOptions = {
   prefix?: string;
 };
 
@@ -107,7 +107,7 @@ type TypedFetchParameters<
       query?: Dictionary<string>;
     });
 
-export const getTypedFetch = <TApi extends ApiEndpoints>(options: TypedFetchOptions = {}) => {
+export const getTypedFetch = <TApi extends ApiEndpoints>(options: GetTypedFetchOptions = {}) => {
   if (typeof fetch === 'undefined') {
     throw new Error('fetch is not available in this context. Are you running it on a browser?');
   }
@@ -117,7 +117,7 @@ export const getTypedFetch = <TApi extends ApiEndpoints>(options: TypedFetchOpti
 // Internal function for testing purposes
 export const getTypedFetchCore = <TApi extends ApiEndpoints>(
   fetchDependency: Window['fetch'],
-  options: TypedFetchOptions = {}
+  options: GetTypedFetchOptions = {}
 ) => {
   return function typedFetch<TPath extends keyof TApi, TMethod extends keyof TApi[TPath]>(
     args: TypedFetchParametersWrapper<TApi, TPath, TMethod>

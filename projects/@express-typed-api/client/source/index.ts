@@ -1,7 +1,7 @@
 export * from '@express-typed-api/common';
 export {
   getTypedFetch,
-  TypedFetchOptions,
+  GetTypedFetchOptions,
   TypedRequestInit,
   TypedRequestInitJsonBody,
   TypedResponse,
