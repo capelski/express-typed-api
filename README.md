@@ -2,6 +2,12 @@
 
 Simple client/server libraries to assist with creating a type declaration for an [express](https://expressjs.com/) API and using that type to automatically infer the return type of client `fetch` requests.
 
+## Contents
+
+- [Usage example](#usage-example)
+- [Server API](#server-api)
+- [Client API](#client)
+
 ## Usage example
 
 Take the following sample express API and its corresponding client request:
@@ -150,3 +156,100 @@ These are the required steps to setup `@express-typed-api` and automatically inf
    ```
 
 ![](/readme/fetch-inferred-return-type.png)
+
+## Server API
+
+### publishApi(app, apiEndpoints, [options])
+
+#### Returns
+
+A list of the successfully published endpoints, each containing its path, method and handlers.
+
+#### Arguments
+
+- **app**: The `express()` or `express.Router()` instance where the api endpoints will be published at.
+- **apiEndpoints**: The API representation object, having the endpoints' handler as properties and the endpoints' path and method as keys.
+- **options**: Optional configuration parameters.
+
+  | name        | type    | default     | description                                            |
+  | ----------- | ------- | ----------- | ------------------------------------------------------ |
+  | pathsPrefix | string? | `undefined` | A string that will be prepended to all endpoints' path |
+
+#### Example
+
+```javascript
+const app = express();
+
+publishApi(app, {
+  '/my/path': {
+    get: (req, res, next) => {
+      /* ... */
+    },
+    post: (req, res, next) => {
+      /* ... */
+    },
+    // ...
+  },
+});
+
+app.listen(3000);
+```
+
+## Client API
+
+### getTypedFetch\<TApi\>([options])
+
+#### Returns
+
+An instance of [typedFetch](#typedfetchpath-init-payload), configured for the `TApi` type.
+
+#### Arguments
+
+- **TApi**: Web API's type declaration, having the endpoints' handler as properties and the endpoints' path and method as keys.
+- **options**: Optional configuration parameters.
+
+  | name    | type    | default     | description                                                |
+  | ------- | ------- | ----------- | ---------------------------------------------------------- |
+  | baseUrl | string? | `undefined` | A string that will be prepended to all fetch requests' URL |
+
+#### Example
+
+```javascript
+const typedFetch = getTypedFetch<MyApiType>();
+```
+
+---
+
+### typedFetch(path, init, [payload])
+
+#### Returns
+
+The Promise that results from calling `fetch` with the corresponding path and init parameters.
+
+#### Arguments
+
+- **path**: The target API endpoint's path.
+- **init**: An object containing custom settings that will be applied to the `fetch` request (i.e. `headers`). Note that the `method` property is mandatory, as it is necessary to resolve the target endpoint's return type.
+- **payload**: An optional object containing data that will be sent with the `fetch` request.
+
+  | name     | type                       | default     | description                                                                                                                                                                                                                                  |
+  | -------- | -------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | jsonBody | any?                       | `undefined` | Only available when using typed Request jsonBody. Non serialized request's body that will be stringified (i.e. `JSON.stringify`) before sending it to the server. Requires including the `Content-Type` header with `application/json` value |
+  | params   | { [key: string]: string }? | `undefined` | Key-value dictionary that can be used to replace express URL parameters in the request's URL (see `paramsResponse` example)                                                                                                                  |
+  | query    | { [key: string]: string }? | `undefined` | Key-value dictionary that can be used to prepend query string parameters to the URL (see `queryResponse` example)                                                                                                                            |
+
+#### Example
+
+```javascript
+const response = await typedFetch('/my/path', { method: 'get' });
+
+const paramsResponse = await typedFetch(
+  '/my/path/:name',
+  { method: 'get' },
+  { params: { name: 'Jena' } }
+);
+// Will generate a request URL of "/my/path/Jena"
+
+const queryResponse = await typedFetch('/my/path', { method: 'get' }, { query: { name: 'Jena' } });
+// Will generate a request URL of "/my/path?name=Jena"
+```
