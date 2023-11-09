@@ -17,11 +17,7 @@
     "dev": "npm run build:common && concurrently --kill-others 'npm run dev:client' 'npm run dev:common' 'npm run dev:server'",
     "dev:client": "npm run dev -w @sample-express-app/client",
     "dev:common": "npm run dev -w @sample-express-app/common",
-    "dev:server": "npm run dev -w @sample-express-app/server",
-    "install:client": "cd client && npm install",
-    "install:common": "cd common && npm install",
-    "install:server": "cd server && npm install",
-    "postinstall": "npm run install:client && npm run install:common && npm run install:server"
+    "dev:server": "npm run dev -w @sample-express-app/server"
   },
   "version": "1.0.0",
   "workspaces": [

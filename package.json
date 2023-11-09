@@ -34,10 +34,8 @@
     "dev:sample": "cd projects/@sample-express-app && npm run dev",
     "format:check": "prettier --list-different './projects/**/*.{js,ts,tsx}' './**/*.json'",
     "format:fix": "prettier --write './projects/**/*.{js,ts,tsx}' './**/*.json'",
-    "install:lib": "cd projects/@express-typed-api && npm install",
-    "install:sample": "cd projects/@sample-express-app && npm install",
+    "install-all": "./install-all.sh",
     "link": "./link-create.sh",
-    "postinstall": "npm run install:lib && npm run install:sample",
     "test": "cd projects/@express-typed-api && npm run test",
     "unlink": "./link-destroy.sh"
   },

@@ -18,10 +18,6 @@
     "dev:client": "npm run dev -w @express-typed-api/client",
     "dev:common": "npm run dev -w @express-typed-api/common",
     "dev:server": "npm run dev -w @express-typed-api/server",
-    "install:client": "cd client && npm install",
-    "install:common": "cd common && npm install",
-    "install:server": "cd server && npm install",
-    "postinstall": "npm run install:client && npm run install:common && npm run install:server",
     "test": "npm run test:client && npm run test:server",
     "test:client": "npm run test -w @express-typed-api/client",
     "test:server": "npm run test -w @express-typed-api/server"
