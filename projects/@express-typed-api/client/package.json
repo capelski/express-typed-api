@@ -1,7 +1,7 @@
 {
   "author": "Carles Capellas <capellas.carles@gmail.com>",
   "dependencies": {
-    "@express-typed-api/common": "^1.0.6"
+    "@express-typed-api/common": "^1.0.7"
   },
   "description": "Client side library to infer the return type of fetch requests based on the corresponding Express Api's types declaration",
   "license": "ISC",
@@ -25,5 +25,5 @@
     "test": "cucumber-js --require-module ts-node/register --require source/**/*.step.ts source/**/*.feature"
   },
   "types": "distribution/index.d.ts",
-  "version": "1.0.6"
+  "version": "1.0.7"
 }
