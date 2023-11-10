@@ -2,7 +2,7 @@
   "author": "Carles Capellas <capellas.carles@gmail.com>",
   "dependencies": {
     "@express-typed-api/client": "^1.0.6",
-    "@sample-express-app/common": "file:projects/@sample-express-app/common"
+    "@sample-express-app/common": "file:../common"
   },
   "description": "@express-typed-api/client usage samples",
   "devDependencies": {
@@ -19,9 +19,9 @@
   "private": true,
   "scripts": {
     "build": "npm run clean && webpack --config webpack/production.config.js",
-    "build:check": "tsc -p ./tsconfig.client.json --noEmit",
+    "build:check": "../../../node_modules/.bin/tsc -p ./tsconfig.client.json --noEmit",
     "clean": "rm -rf distribution",
-    "clean:modules": "rm -rf node_modules",
+    "clean-modules": "rm -rf node_modules",
     "dev": "webpack serve --config webpack/development.config.js"
   },
   "version": "1.0.0"

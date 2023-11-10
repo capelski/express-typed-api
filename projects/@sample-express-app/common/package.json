@@ -9,11 +9,11 @@
   "name": "@sample-express-app/common",
   "private": true,
   "scripts": {
-    "build": "npm run clean && tsc -p ./tsconfig.common.json",
-    "build:check": "tsc -p ./tsconfig.common.json --noEmit",
+    "build": "npm run clean && ../../../node_modules/.bin/tsc -p ./tsconfig.common.json",
+    "build:check": "../../../node_modules/.bin/tsc -p ./tsconfig.common.json --noEmit",
     "clean": "rm -rf distribution",
-    "clean:modules": "rm -rf node_modules",
-    "dev": "tsc -p ./tsconfig.common.json --watch"
+    "clean-modules": "rm -rf node_modules",
+    "dev": "../../../node_modules/.bin/tsc -p ./tsconfig.common.json --watch"
   },
   "types": "distribution/index.d.ts",
   "version": "1.0.0"

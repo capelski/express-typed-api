@@ -5,18 +5,23 @@
 
 INSTALL_COMMAND=${1:-"ci"}
 
+echo Installing root dependencies...
 npm $INSTALL_COMMAND
 
 cd projects/@express-typed-api
-npm $INSTALL_COMMAND
+echo Installing @express-typed-api/client dependencies...
 cd client; npm $INSTALL_COMMAND; cd ..
+echo Installing @express-typed-api/common dependencies...
 cd common; npm $INSTALL_COMMAND; cd ..
+echo Installing @express-typed-api/server dependencies...
 cd server; npm $INSTALL_COMMAND; cd ..
 cd ../..
 
 cd projects/@sample-express-app
-npm $INSTALL_COMMAND
+echo Installing @sample-express-app/client dependencies...
 cd client; npm $INSTALL_COMMAND; cd ..
+echo Installing @sample-express-app/common dependencies...
 cd common; npm $INSTALL_COMMAND; cd ..
+echo Installing @sample-express-app/server dependencies...
 cd server; npm $INSTALL_COMMAND; cd ..
 cd ../..

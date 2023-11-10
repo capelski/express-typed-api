@@ -2,7 +2,7 @@
   "author": "Carles Capellas <capellas.carles@gmail.com>",
   "dependencies": {
     "@express-typed-api/server": "^1.0.6",
-    "@sample-express-app/common": "file:projects/@sample-express-app/common",
+    "@sample-express-app/common": "file:../common",
     "express": "^4.18.2"
   },
   "description": "@express-typed-api/server usage samples",
@@ -13,10 +13,10 @@
   "name": "@sample-express-app/server",
   "private": true,
   "scripts": {
-    "build": "tsc -p ./tsconfig.server.json",
-    "build:check": "tsc -p ./tsconfig.server.json --noEmit",
+    "build": "../../../node_modules/.bin/tsc -p ./tsconfig.server.json",
+    "build:check": "../../../node_modules/.bin/tsc -p ./tsconfig.server.json --noEmit",
     "clean": "rm -rf distribution",
-    "clean:modules": "rm -rf node_modules",
+    "clean-modules": "rm -rf node_modules",
     "dev": "nodemon source/sample-server.ts"
   },
   "version": "1.0.0"
