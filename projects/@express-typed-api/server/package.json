@@ -1,7 +1,7 @@
 {
   "author": "Carles Capellas <capellas.carles@gmail.com>",
   "dependencies": {
-    "@express-typed-api/common": "^1.0.5",
+    "@express-typed-api/common": "^1.0.6",
     "@types/express": "^4.17.14"
   },
   "description": "Server side library to expose an Express Api's endpoints generating a types declaration for the Api",

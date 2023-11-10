@@ -1,7 +1,7 @@
 {
   "author": "Carles Capellas <capellas.carles@gmail.com>",
   "dependencies": {
-    "@express-typed-api/common": "^1.0.5"
+    "@express-typed-api/common": "^1.0.6"
   },
   "description": "Client side library to infer the return type of fetch requests based on the corresponding Express Api's types declaration",
   "license": "ISC",
