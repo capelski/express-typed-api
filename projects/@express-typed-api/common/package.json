@@ -18,7 +18,6 @@
   "scripts": {
     "build": "npm run clean && tsc -p ./tsconfig.common.json",
     "clean": "rm -rf distribution",
-    "clean-modules": "rm -rf node_modules",
     "dev": "tsc -p ./tsconfig.common.json --watch",
     "prepack": "npm run build && cp ../../../README.md README.md",
     "postpack": "rm README.md"

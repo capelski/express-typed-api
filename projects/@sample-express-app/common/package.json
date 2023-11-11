@@ -12,7 +12,6 @@
     "build": "npm run clean && tsc -p ./tsconfig.common.json",
     "build:check": "tsc -p ./tsconfig.common.json --noEmit",
     "clean": "rm -rf distribution",
-    "clean-modules": "rm -rf node_modules",
     "dev": "tsc -p ./tsconfig.common.json --watch"
   },
   "types": "distribution/index.d.ts",
