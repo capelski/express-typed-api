@@ -13,8 +13,8 @@
   "name": "@sample-express-app/server",
   "private": true,
   "scripts": {
-    "build": "../../../node_modules/.bin/tsc -p ./tsconfig.server.json",
-    "build:check": "../../../node_modules/.bin/tsc -p ./tsconfig.server.json --noEmit",
+    "build": "tsc -p ./tsconfig.server.json",
+    "build:check": "tsc -p ./tsconfig.server.json --noEmit",
     "clean": "rm -rf distribution",
     "clean-modules": "rm -rf node_modules",
     "dev": "nodemon source/sample-server.ts"

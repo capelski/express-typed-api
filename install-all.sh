@@ -3,7 +3,7 @@
 
 # Usage: ./install-all.sh [ ci | i ]
 
-INSTALL_COMMAND=${1:-"ci"}
+INSTALL_COMMAND=${1:-"i"}
 
 echo Installing root dependencies...
 npm $INSTALL_COMMAND

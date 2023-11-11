@@ -17,10 +17,10 @@
     "url": "https://github.com/capelski/express-typed-api.git"
   },
   "scripts": {
-    "build": "npm run clean && ../../../node_modules/.bin/tsc -p ./tsconfig.server.json",
+    "build": "npm run clean && tsc -p ./tsconfig.server.json",
     "clean": "rm -rf distribution",
     "clean-modules": "rm -rf node_modules",
-    "dev": "../../../node_modules/.bin/tsc -p ./tsconfig.server.json --watch",
+    "dev": "tsc -p ./tsconfig.server.json --watch",
     "prepack": "npm run build && cp ../../../README.md README.md",
     "postpack": "rm README.md",
     "test": "cucumber-js --require-module ts-node/register --require source/**/*.step.ts source/**/*.feature"
