@@ -1,9 +1,5 @@
 import { TypedResponse } from '@express-typed-api/client';
-import {
-  validateCityName,
-  WeatherApi_FullPaths,
-  WeatherEndpointResponse,
-} from '@sample-express-app/common';
+import { validateCityName, WeatherEndpointResponse } from '@sample-express-app/common';
 import {
   cityNameInput,
   errorMessage,
@@ -12,9 +8,17 @@ import {
   minTemperature,
   maxTemperature,
   windSpeed,
-  getWeatherButton,
   requestUrl,
   requestBody,
+  expressRouterJsonBodyButton,
+  expressRouterParamsButton,
+  expressRouterQueryButton,
+  fullPathJsonBodyButton,
+  fullPathParamsButton,
+  fullPathQueryButton,
+  prefixJsonBodyButton,
+  prefixParamsButton,
+  prefixQueryButton,
 } from './sample-elements';
 import { getFullPathsFetchers, getPartialPathsFetchers } from './sample-typed-fetch';
 
@@ -32,17 +36,9 @@ window.fetch = function (...args: Parameters<typeof fetch>) {
   return windowFetch(...args);
 };
 
-const fetchHandlers: {
-  [key: string]: {
-    [key: string]: (cityName: string) => Promise<TypedResponse<WeatherEndpointResponse>>;
-  };
-} = {
-  '/full-path': getFullPathsFetchers(),
-  '/prefix': getPartialPathsFetchers('/prefix'),
-  '/express-router': getPartialPathsFetchers('/express-router'),
-};
-
-getWeatherButton.addEventListener('click', async () => {
+const requestWeatherData = async (
+  fetcher: (cityName: string) => Promise<TypedResponse<WeatherEndpointResponse>>
+) => {
   const cityName = cityNameInput.value;
   const cityNameValidation = validateCityName(cityName);
 
@@ -52,12 +48,7 @@ getWeatherButton.addEventListener('click', async () => {
   }
   errorMessage.innerText = '';
 
-  const requestPayload = document.querySelector<HTMLInputElement>(
-    'input[name=request-payload]:checked'
-  )!;
-  const baseUrl = document.querySelector<HTMLInputElement>('input[name=base-url]:checked')!;
-
-  const response = await fetchHandlers[baseUrl.value][requestPayload.value](cityName);
+  const response = await fetcher(cityName);
 
   try {
     const payload = await response.json();
@@ -77,4 +68,20 @@ getWeatherButton.addEventListener('click', async () => {
     console.error(error);
     errorMessage.innerText = 'Network error';
   }
-});
+};
+
+const fullPath = getFullPathsFetchers();
+const prefix = getPartialPathsFetchers('/prefix');
+const expressRouter = getPartialPathsFetchers('/express-router');
+
+fullPathJsonBodyButton.addEventListener('click', () => requestWeatherData(fullPath.jsonBody));
+fullPathParamsButton.addEventListener('click', () => requestWeatherData(fullPath.params));
+fullPathQueryButton.addEventListener('click', () => requestWeatherData(fullPath.query));
+prefixJsonBodyButton.addEventListener('click', () => requestWeatherData(prefix.jsonBody));
+prefixParamsButton.addEventListener('click', () => requestWeatherData(prefix.params));
+prefixQueryButton.addEventListener('click', () => requestWeatherData(prefix.query));
+expressRouterJsonBodyButton.addEventListener('click', () =>
+  requestWeatherData(expressRouter.jsonBody)
+);
+expressRouterParamsButton.addEventListener('click', () => requestWeatherData(expressRouter.params));
+expressRouterQueryButton.addEventListener('click', () => requestWeatherData(expressRouter.query));

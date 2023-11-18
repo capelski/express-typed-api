@@ -12,33 +12,33 @@
     <div>
       <div>
         <p>
-          <span>Request payload: </span>
-          <input name="request-payload" type="radio" value="jsonBody" />
-          <span>JSON body</span>
-          <input name="request-payload" type="radio" value="params" />
-          <span>URL parameter</span>
-          <input name="request-payload" type="radio" value="query" checked="true" />
-          <span>Query string</span>
+          <span>City: </span>
+          <input id="city-name" type="text" value="Brussels" />
         </p>
-
-        <p>
-          <span>Base url: </span>
-          <input name="base-url" type="radio" value="/full-path" checked="true" />
-          <span>/full-path</span>
-          <input name="base-url" type="radio" value="/prefix" />
-          <span>/prefix</span>
-          <input name="base-url" type="radio" value="/express-router" />
-          <span>/express-router</span>
-        </p>
+        <p id="error-message" style="color: red"></p>
 
         <br />
 
         <p>
-          <span>City: </span>
-          <input id="city-name" type="text" value="Brussels" />
-          <button id="get-weather" type="button">Get weather!</button>
+          <span>Full path URLs:</span>&nbsp;
+          <button id="full-path-query" type="button">GET Query string</button>&nbsp;
+          <button id="full-path-params" type="button">GET URL parameter</button>&nbsp;
+          <button id="full-path-json-body" type="button">POST JSON body</button>
         </p>
-        <p id="error-message" style="color: red"></p>
+
+        <p>
+          <span>Prefix URLs:</span>&nbsp;
+          <button id="prefix-query" type="button">GET Query string</button>&nbsp;
+          <button id="prefix-params" type="button">GET URL parameter</button>&nbsp;
+          <button id="prefix-json-body" type="button">POST JSON body</button>
+        </p>
+
+        <p>
+          <span>Express router:</span>&nbsp;
+          <button id="express-router-query" type="button">GET Query string</button>&nbsp;
+          <button id="express-router-params" type="button">GET URL parameter</button>&nbsp;
+          <button id="express-router-json-body" type="button">POST JSON body</button>
+        </p>
 
         <br />
 
