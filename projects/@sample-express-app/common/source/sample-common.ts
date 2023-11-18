@@ -55,12 +55,12 @@ export type GetWeatherByURLParam = EndpointHandler<
 /**
  * Sample API's type declaration containing the endpoints' full path
  */
-export type WeatherApi = {
-  '/api/weather': {
+export type WeatherApi_FullPaths = {
+  '/full-path/weather': {
     get: GetWeatherByQueryString;
     post: GetWeatherByJsonBody;
   };
-  '/api/weather/:cityName': {
+  '/full-path/weather/:cityName': {
     get: GetWeatherByURLParam;
   };
 };
@@ -69,7 +69,7 @@ export type WeatherApi = {
  * Sample API's type declaration containing the endpoints' partial path,
  * which will be published with a prefix
  */
-export type WeatherApiWithPrefix = {
+export type WeatherApi_PartialPaths = {
   '/weather': {
     get: GetWeatherByQueryString;
     post: GetWeatherByJsonBody;

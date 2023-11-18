@@ -7,7 +7,9 @@ module.exports = merge(baseConfig, {
     historyApiFallback: true,
     open: true,
     proxy: {
-      '/api': 'http://localhost:3000',
+      '/full-path': 'http://localhost:3000',
+      '/prefix': 'http://localhost:3000',
+      '/express-router': 'http://localhost:3000',
     },
   },
 });

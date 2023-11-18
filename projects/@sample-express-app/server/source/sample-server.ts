@@ -1,27 +1,21 @@
 import { publishApi } from '@express-typed-api/server';
-import { WeatherApi, WeatherApiWithPrefix } from '@sample-express-app/common';
+import { WeatherApi_FullPaths, WeatherApi_PartialPaths } from '@sample-express-app/common';
 import express from 'express';
 import { weatherByQueryString, weatherByJsonBody, weatherByUrlParam } from './sample-endpoints';
 
 const app = express();
 
-/* 1. Endpoints' full path example */
-
-const weatherApi: WeatherApi = {
-  '/api/weather': {
+const weatherApi_fullPaths: WeatherApi_FullPaths = {
+  '/full-path/weather': {
     get: weatherByQueryString,
     post: weatherByJsonBody,
   },
-  '/api/weather/:cityName': {
+  '/full-path/weather/:cityName': {
     get: weatherByUrlParam,
   },
 };
 
-publishApi(app, weatherApi);
-
-/* 2. Endpoints' partial path example, using a server prefix */
-
-const weatherApiWithPrefix: WeatherApiWithPrefix = {
+const weatherApi_partialPaths: WeatherApi_PartialPaths = {
   '/weather': {
     get: weatherByQueryString,
     post: weatherByJsonBody,
@@ -31,15 +25,19 @@ const weatherApiWithPrefix: WeatherApiWithPrefix = {
   },
 };
 
-publishApi(app, weatherApiWithPrefix, { pathsPrefix: '/api/v1' });
+/* 1. Endpoints' full paths example */
 
-/* 3. Endpoints' partial path example, using an express router */
+publishApi(app, weatherApi_fullPaths);
+
+/* 2. Endpoints' partial paths example, using a server prefix */
+
+publishApi(app, weatherApi_partialPaths, { pathsPrefix: '/prefix' });
+
+/* 3. Endpoints' partial paths example, using an express router */
 
 const router = express.Router();
-
-publishApi(router, weatherApiWithPrefix);
-
-app.use('/api/v2', router);
+publishApi(router, weatherApi_partialPaths);
+app.use('/express-router', router);
 
 /* Server launch */
 

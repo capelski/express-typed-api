@@ -1,5 +1,9 @@
 import { TypedResponse } from '@express-typed-api/client';
-import { validateCityName, WeatherEndpointResponse } from '@sample-express-app/common';
+import {
+  validateCityName,
+  WeatherApi_FullPaths,
+  WeatherEndpointResponse,
+} from '@sample-express-app/common';
 import {
   cityNameInput,
   errorMessage,
@@ -12,8 +16,7 @@ import {
   requestUrl,
   requestBody,
 } from './sample-elements';
-import { fullPathHandlers } from './sample-typed-fetch';
-import { baseUrlHandlers } from './sample-typed-fetch-base-url';
+import { getFullPathsFetchers, getPartialPathsFetchers } from './sample-typed-fetch';
 
 let latestRequest: {
   url: string;
@@ -34,9 +37,9 @@ const fetchHandlers: {
     [key: string]: (cityName: string) => Promise<TypedResponse<WeatherEndpointResponse>>;
   };
 } = {
-  none: fullPathHandlers(),
-  '/api/v1': baseUrlHandlers('/api/v1'),
-  '/api/v2': baseUrlHandlers('/api/v2'),
+  '/full-path': getFullPathsFetchers(),
+  '/prefix': getPartialPathsFetchers('/prefix'),
+  '/express-router': getPartialPathsFetchers('/express-router'),
 };
 
 getWeatherButton.addEventListener('click', async () => {
