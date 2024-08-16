@@ -39,7 +39,7 @@
     "clean:sample:common": "npm run clean -w @sample-express-app/common",
     "clean:sample:server": "npm run clean -w @sample-express-app/server",
     "clean-modules": "rm -rf node_modules",
-    "dev": "npm run build:lib && concurrently --kill-others 'sleep 15; npm run dev:lib' 'npm run dev:sample'",
+    "dev": "npm run build:lib && concurrently --kill-others 'npm run dev:lib' 'sleep 15; npm run dev:sample'",
     "dev:lib": "npm run build:lib:common && concurrently --kill-others 'npm run dev:lib:client' 'npm run dev:lib:common' 'npm run dev:lib:server'",
     "dev:lib:client": "npm run dev -w @express-typed-api/client",
     "dev:lib:common": "npm run dev -w @express-typed-api/common",
