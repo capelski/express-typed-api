@@ -1,7 +1,7 @@
 {
   "author": "Carles Capellas <capellas.carles@gmail.com>",
   "dependencies": {
-    "@express-typed-api/common": "^1.0.8"
+    "@express-typed-api/common": "^1.0.9"
   },
   "description": "Common code for @express-typed-api client/server usage samples",
   "license": "ISC",
