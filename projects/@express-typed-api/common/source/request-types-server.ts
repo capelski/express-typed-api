@@ -62,6 +62,4 @@ export type ServerRequestMembers<TDefinition extends EHRequestDefinition = {}> =
         query: any; // express.Request['query'];
       };
 
-type a = ServerRequestMembers<{ query: { cityName: string } }>;
-
 export type UntypedRequestHandler = Omit<Omit<Omit<express.Request, 'body'>, 'params'>, 'query'>;
