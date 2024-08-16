@@ -31,5 +31,7 @@ cd ../../..
 
 npm i # Necessary to adjust package-lock.json after installs
 
+npm run dev # Check the sample app runs correctly
+
 git add .
 git commit -m "version X.Y.Z"
