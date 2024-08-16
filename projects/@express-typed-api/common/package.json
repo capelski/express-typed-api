@@ -23,5 +23,5 @@
     "postpack": "rm README.md"
   },
   "types": "distribution/index.d.ts",
-  "version": "1.0.7"
+  "version": "1.0.8"
 }
