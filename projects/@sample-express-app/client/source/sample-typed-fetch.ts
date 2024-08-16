@@ -6,21 +6,18 @@ export const getFullPathsFetchers = () => {
 
   return {
     jsonBody: (cityName: string) =>
-      typedFetch(
-        '/full-path/weather',
-        {
-          headers: { 'Content-Type': 'application/json' },
-          method: 'post',
-        },
-        { jsonBody: { cityName } }
-      ),
+      typedFetch('/full-path/weather', {
+        body: JSON.stringify({ cityName }), // Not required by TS
+        headers: { 'Content-Type': 'application/json' },
+        method: 'post',
+      }),
     params: (cityName: string) =>
       typedFetch(
         '/full-path/weather/:cityName',
         { method: 'get' },
         {
           params: {
-            cityName,
+            cityName, // Not required by TS
           },
         }
       ),
@@ -30,7 +27,7 @@ export const getFullPathsFetchers = () => {
         { method: 'get' },
         {
           query: {
-            cityName,
+            cityName, // Not required by TS
           },
         }
       ),
@@ -48,7 +45,7 @@ export const getPartialPathsFetchers = (baseUrl: string) => {
           headers: { 'Content-Type': 'application/json' },
           method: 'post',
         },
-        { jsonBody: { cityName } }
+        { jsonBody: { cityName } } // Required by TS
       ),
     params: (cityName: string) =>
       typedFetch(
@@ -56,7 +53,7 @@ export const getPartialPathsFetchers = (baseUrl: string) => {
         { method: 'get' },
         {
           params: {
-            cityName,
+            cityName, // Required by TS
           },
         }
       ),
@@ -66,7 +63,7 @@ export const getPartialPathsFetchers = (baseUrl: string) => {
         { method: 'get' },
         {
           query: {
-            cityName,
+            cityName, // Required by TS
           },
         }
       ),

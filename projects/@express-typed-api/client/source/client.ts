@@ -68,7 +68,7 @@ type TypedFetchArguments<
       {
         jsonBody: TBody;
         params?: Dictionary<string>;
-        query?: Dictionary<string>;
+        query?: TQuery;
       }
     >
   : TDefinition extends Params_Query<infer TParams, infer TQuery>

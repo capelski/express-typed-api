@@ -37,31 +37,17 @@ export enum WeatherIcons {
   mist = '50d',
 }
 
-export type GetWeatherByJsonBody = EndpointHandlerWithMiddleware<
-  WeatherEndpointResponse,
-  { jsonBody: WeatherEndpointInput }
->;
-
-export type GetWeatherByQueryString = EndpointHandler<
-  WeatherEndpointResponse,
-  { query: WeatherEndpointInput }
->;
-
-export type GetWeatherByURLParam = EndpointHandler<
-  WeatherEndpointResponse,
-  { params: WeatherEndpointInput }
->;
-
 /**
- * Sample API's type declaration containing the endpoints' full path
+ * Sample API's type declaration containing the endpoints' full path.
+ * Deliberately untyped request payloads for demonstration purposes
  */
 export type WeatherApi_FullPaths = {
   '/full-path/weather': {
-    get: GetWeatherByQueryString;
-    post: GetWeatherByJsonBody;
+    get: EndpointHandler<WeatherEndpointResponse>;
+    post: EndpointHandlerWithMiddleware<WeatherEndpointResponse>;
   };
   '/full-path/weather/:cityName': {
-    get: GetWeatherByURLParam;
+    get: EndpointHandler<WeatherEndpointResponse>;
   };
 };
 
@@ -71,11 +57,14 @@ export type WeatherApi_FullPaths = {
  */
 export type WeatherApi_PartialPaths = {
   '/weather': {
-    get: GetWeatherByQueryString;
-    post: GetWeatherByJsonBody;
+    get: EndpointHandler<WeatherEndpointResponse, { query: WeatherEndpointInput }>;
+    post: EndpointHandlerWithMiddleware<
+      WeatherEndpointResponse,
+      { jsonBody: WeatherEndpointInput }
+    >;
   };
   '/weather/:cityName': {
-    get: GetWeatherByURLParam;
+    get: EndpointHandler<WeatherEndpointResponse, { params: WeatherEndpointInput }>;
   };
 };
 

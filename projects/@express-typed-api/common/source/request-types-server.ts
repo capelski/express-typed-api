@@ -58,8 +58,8 @@ export type ServerRequestMembers<TDefinition extends EHRequestDefinition = {}> =
       }
     : {
         body: express.Request['body'];
-        params: any; // express.Request['params']; TODO
-        query: any; // express.Request['query'];
+        params: express.Request['params'];
+        query: express.Request['query'];
       };
 
 export type UntypedRequestHandler = Omit<Omit<Omit<express.Request, 'body'>, 'params'>, 'query'>;

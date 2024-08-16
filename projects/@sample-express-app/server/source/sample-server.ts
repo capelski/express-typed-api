@@ -1,29 +1,9 @@
 import { publishApi } from '@express-typed-api/server';
-import { WeatherApi_FullPaths, WeatherApi_PartialPaths } from '@sample-express-app/common';
 import express from 'express';
-import { weatherByQueryString, weatherByJsonBody, weatherByUrlParam } from './sample-endpoints';
+import { weatherApi_fullPaths } from './sample-endpoints-full-paths';
+import { weatherApi_partialPaths } from './sample-endpoints-partial-paths';
 
 const app = express();
-
-const weatherApi_fullPaths: WeatherApi_FullPaths = {
-  '/full-path/weather': {
-    get: weatherByQueryString,
-    post: weatherByJsonBody,
-  },
-  '/full-path/weather/:cityName': {
-    get: weatherByUrlParam,
-  },
-};
-
-const weatherApi_partialPaths: WeatherApi_PartialPaths = {
-  '/weather': {
-    get: weatherByQueryString,
-    post: weatherByJsonBody,
-  },
-  '/weather/:cityName': {
-    get: weatherByUrlParam,
-  },
-};
 
 /* 1. Endpoints' full paths example */
 

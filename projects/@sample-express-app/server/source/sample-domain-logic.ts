@@ -1,4 +1,5 @@
-import { WeatherIcons, Weather } from '@sample-express-app/common';
+import { EndpointResponse } from '@express-typed-api/common';
+import { WeatherIcons, Weather, validateCityName } from '@sample-express-app/common';
 
 export const getRandomWeather = (): Weather => ({
   icon: randomWeatherIcon(),
@@ -17,4 +18,13 @@ const randomFloat = (min: number, max: number, decimals = 2) => {
 const randomWeatherIcon = () => {
   const icons = Object.values(WeatherIcons) as WeatherIcons[];
   return icons[Math.floor(Math.random() * icons.length)];
+};
+
+export const weatherLogic = (cityName: string | undefined) => {
+  const cityNameValidation = validateCityName(cityName);
+
+  if (!cityNameValidation.valid) {
+    return new EndpointResponse({ errorMessage: cityNameValidation.message }, 400);
+  }
+  return new EndpointResponse(getRandomWeather());
 };
